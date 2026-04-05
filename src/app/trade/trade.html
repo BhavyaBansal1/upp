@@ -1,0 +1,73 @@
+<div class="container mt-4">
+
+  <!-- Title -->
+  <h2 class="text-center mb-4">Trade</h2>
+
+  <!-- Balance -->
+  <div class="alert alert-info text-center">
+    Available balance: <strong>${{balanceService.balanceamount}}</strong>
+  </div>
+
+  <!-- Form Card -->
+  <div class="card p-4 shadow-sm">
+    
+    <div class="mb-3">
+      <label class="form-label">Stock Name</label>
+      <input class="form-control" [(ngModel)]="stockName" placeholder="Enter stock name">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Quantity</label>
+      <input type="number" class="form-control" [(ngModel)]="quantity" min="1" placeholder="1">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Holding Type</label>
+      <select class="form-select" [(ngModel)]="holdingtype">
+        <option value="stock">Stock</option>
+        <option value="Mutualfunds">Mutual Fund</option>
+      </select>
+    </div>
+
+    <p class="fw-bold">Price per share: ${{price}}</p>
+
+    <!-- Order Value -->
+    <div class="mb-3">
+      <button class="btn btn-primary me-2" (click)="calculateOrderValue()">Calculate Order Value</button>
+      <span class="fw-bold">${{Ordervalue}}</span>
+    </div>
+
+    <!-- Buttons -->
+    <div class="mb-3">
+      <button class="btn btn-success me-2" (click)="buy()">Buy</button>
+      <button class="btn btn-danger" (click)="sell()">Sell</button>
+    </div>
+
+    <!-- Message -->
+    <div *ngIf="msg" class="alert alert-warning">
+      {{msg}}
+    </div>
+
+  </div>
+
+  <!-- Transactions -->
+  <div class="mt-4">
+    <h4>Transactions</h4>
+
+    <div *ngFor="let t of Transactions" class="card mb-2 p-3 shadow-sm">
+      <p class="mb-1">
+        <strong [ngClass]="t.type === 'Buy' ? 'text-success' : 'text-danger'">
+          {{t.type === 'Buy' ? 'Bought' : 'Sold'}}
+        </strong>
+        {{t.Quantity}} {{t.holdingtype}} of <strong>{{t.stockName}}</strong>
+      </p>
+
+      <small class="text-muted">
+        Price: ${{t.Price}} |
+        Time: {{t.CurrentTime | date:'yyyy-MM-dd HH:mm:ss'}}
+      </small>
+    </div>
+
+  </div>
+
+</div>
