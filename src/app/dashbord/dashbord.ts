@@ -3,6 +3,7 @@ import { Navbar } from '../navbar/navbar';
 import { Sumary } from '../sumary/sumary';
 import { Hoalding } from '../hoalding/hoalding';
 import Chart from 'chart.js/auto';
+import { Holdings } from '../holdings';
 
 @Component({
   selector: 'app-dashbord',
@@ -11,8 +12,9 @@ import Chart from 'chart.js/auto';
   styleUrl: './dashbord.css',
 })
 export class Dashbord implements AfterViewInit {
-
-  // 👉 TEMP DATA (replace later with service)
+constructor(public holdingservice:Holdings){
+  
+}
   getstocks() {
     return [
       { stockName: 'TCS', quantity: 10 },
@@ -40,7 +42,7 @@ export class Dashbord implements AfterViewInit {
     const stocks = this.getstocks();
 
     new Chart("stockChart", {
-      type: 'pie',
+      type: 'bar',
       data: {
         labels: stocks.map(s => s.stockName),
         datasets: [{

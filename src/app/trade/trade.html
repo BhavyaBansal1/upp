@@ -10,16 +10,45 @@
 
   <!-- Form Card -->
   <div class="card p-4 shadow-sm">
-    
+<!--     
     <div class="mb-3">
       <label class="form-label">Stock Name</label>
       <input class="form-control" [(ngModel)]="stockName" placeholder="Enter stock name">
+    </div> -->
+    <div class="mb-3">
+      <label class="form-label">Stock Name</label>
+      <select class="form-select" [(ngModel)]="stockName">
+        <option value="Microsoft">Microsoft</option>
+        <option value="tata">tata</option>
+        <option value="tesla">tesla</option>
+        <option value="aapl">aapl</option>
+      </select>
     </div>
 
+
     <div class="mb-3">
-      <label class="form-label">Quantity</label>
-      <input type="number" class="form-control" [(ngModel)]="quantity" min="1" placeholder="1">
-    </div>
+  <label class="form-label">Quantity</label>
+  <input 
+    type="number"
+    class="form-control"
+    [(ngModel)]="quantity"
+    #qty="ngModel"
+    min="1"
+    step="1"
+    pattern="^[0-9]+$"
+    required
+  >
+  <div *ngIf="qty.invalid && qty.touched" class="text-danger">
+    <small *ngIf="qty.errors?.['pattern']">
+      Only whole numbers allowed
+    </small>
+    <small *ngIf="qty.errors?.['min']">
+      Minimum quantity is 1
+    </small>
+  </div>
+ 
+</div>
+ 
 
     <div class="mb-3">
       <label class="form-label">Holding Type</label>
@@ -39,15 +68,15 @@
 
     <!-- Buttons -->
     <div class="mb-3">
-      <button class="btn btn-success me-2" (click)="buy()">Buy</button>
-      <button class="btn btn-danger" (click)="sell()">Sell</button>
+      <button [disabled]="qty.invalid" class="btn btn-success me-2" (click)="buy() ">Buy</button>
+      <button [disabled]="qty.invalid" class="btn btn-danger" (click)="sell()">Sell</button>
     </div>
 
     <!-- Message -->
     <div *ngIf="msg" class="alert alert-warning">
       {{msg}}
     </div>
-
+      <p class="text-muted">Current shaer are {{quantity}}</p>
   </div>
 
   <!-- Transactions -->

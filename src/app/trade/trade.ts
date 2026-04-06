@@ -21,6 +21,7 @@ export class Trade implements OnInit {
   Transactions: any[] = [];
   currenttime: any;
   holdingtype: string = '';
+  available:number=0;
 
   constructor(
     public balanceService: BalanceService,
@@ -29,9 +30,9 @@ export class Trade implements OnInit {
 
   ngOnInit() {
     setInterval(() => {
-      let change = (Math.random() * 4 - 2); // -2 to +2
+      let change = (Math.random() * 4 - 2);
       this.price = Math.max(1, Math.round(this.price + change));
-    }, 1000);
+    }, 500);
   }
 
   calculateOrderValue() {
@@ -50,9 +51,10 @@ export class Trade implements OnInit {
         this.stockName,
         this.quantity,
         this.currenttime,
-        this.holdingtype
+        this.holdingtype,
+        this.price
       );
-
+this.available=this.quantity
       this.Transactions.push({
         stockName: this.stockName,
         Quantity: this.quantity,

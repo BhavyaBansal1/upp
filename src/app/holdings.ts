@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class Holdings {
   list:any[]=[];
-  buy(stockName:string,quantity:number,currenttime:any,type:string){
+  buy(stockName:string,quantity:number,currenttime:any,type:string,price:number){
     currenttime=Date.now();
     const check=this.list.find(s=>s.stockName === stockName);
     if(check){
@@ -14,7 +14,7 @@ export class Holdings {
     }}
     else{
       if(quantity>0){
-      this.list.push({stockName,quantity,currenttime,type});
+      this.list.push({stockName,quantity,currenttime,type,price});
     }}
   }
   sell(stockName:string,quantity:number,currenttime:any){
