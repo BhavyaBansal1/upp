@@ -4,36 +4,82 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class Holdings {
-  list:any[]=[];
-  buy(stockName:string,quantity:number,currenttime:any,type:string,price:number){
-    currenttime=Date.now();
-    const check=this.list.find(s=>s.stockName === stockName);
-    if(check){
-      if(quantity>0){
-      check.quantity+=quantity;
-    }}
-    else{
-      if(quantity>0){
-      this.list.push({stockName,quantity,currenttime,type,price});
-    }}
-  }
-  sell(stockName:string,quantity:number,currenttime:any){
-    const check=this.list.find(s=>s.stockName === stockName);
 
-    // if(check && check.quantity>=quantity){
-    //   check.quantity=check.quantity-quantity;
-    // }
-    if(!check || check.quantity<quantity){
-      return false;
+  list: any[] = [
+    {
+      stockName: 'Microsoft',
+      quantity: 10,
+      currenttime: Date.now(),
+      type: 'stock',
+      price: 100
+    },
+    {
+      stockName: 'tata',
+      quantity: 25,
+      currenttime: Date.now(),
+      type: 'stock',
+      price: 50
+    },
+    {
+      stockName: 'tesla',
+      quantity: 5,
+      currenttime: Date.now(),
+      type: 'stock',
+      price: 200
+    },
+    {
+      stockName: 'aapl',
+      quantity: 15,
+      currenttime: Date.now(),
+      type: 'stock',
+      price: 150
     }
-    else {
-    check.quantity=check.quantity-quantity;
-    return true;
+  ];
+
+  buy(stockName: string, quantity: number, currenttime: any, type: string, price: number) {
+
+    const check = this.list.find(s => s.stockName === stockName);
+
+    if (check) {
+      if (quantity > 0) {
+        check.quantity += quantity;
+        check.currenttime = Date.now();
+        check.price = price;
+        check.type = type;
+      }
+    } else {
+      if (quantity > 0) {
+        this.list.push({
+          stockName,
+          quantity,
+          currenttime: Date.now(),
+          type,
+          price
+        });
+      }
     }
-    
   }
-  getAllholdings(){
-      return this.list;
+
+  sell(stockName: string, quantity: number, currenttime: any) {
+
+    const check = this.list.find(s => s.stockName === stockName);
+
+    if (!check || check.quantity < quantity) {
+      return false;
+    } else {
+      check.quantity -= quantity;
+      check.currenttime = Date.now();
+      return true;
     }
+  }
+
+  getAllholdings() {
+    return this.list;
+  }
+
   
+  getQuantity(stockName: string): number {
+    const stock = this.list.find(s => s.stockName === stockName);
+    return stock ? stock.quantity : 0;
+  }
 }

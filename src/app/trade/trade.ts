@@ -13,15 +13,13 @@ import { CommonModule } from '@angular/common';
 export class Trade implements OnInit {
 
   price: number = 10;
-  quantity: any;
-  type: string = "";
+  quantity: number =0;
   stockName: string = '';
   msg: string = '';
   Ordervalue: number = 0;
   Transactions: any[] = [];
   currenttime: any;
-  holdingtype: string = '';
-  available:number=0;
+  holdingtype: string = 'stock';
 
   constructor(
     public balanceService: BalanceService,
@@ -44,9 +42,10 @@ export class Trade implements OnInit {
     const cost = this.quantity * this.price;
 
     if (cost > this.balanceService.balanceamount) {
-      this.msg = "not enough balance";
+      this.msg = "Not enough balance";
     } else {
       this.balanceService.buys(cost);
+
       this.holdingservice.buy(
         this.stockName,
         this.quantity,
@@ -54,7 +53,7 @@ export class Trade implements OnInit {
         this.holdingtype,
         this.price
       );
-this.available=this.quantity
+
       this.Transactions.push({
         stockName: this.stockName,
         Quantity: this.quantity,
@@ -63,7 +62,8 @@ this.available=this.quantity
         type: 'Buy'
       });
 
-      this.msg = "stocks bought";
+      this.msg = "Stocks bought successfully";
+      this.quantity = 1; // optional reset
     }
   }
 
@@ -71,6 +71,8 @@ this.available=this.quantity
     const cost = this.quantity * this.price;
 
     if (this.holdingservice.sell(this.stockName, this.quantity, this.currenttime)) {
+
+      this.balanceService.sell(cost);
 
       this.Transactions.push({
         stockName: this.stockName,
@@ -80,12 +82,11 @@ this.available=this.quantity
         CurrentTime: Date.now()
       });
 
-      this.balanceService.sell(cost);
-      this.msg = "stocks are sold";
+      this.msg = "Stocks sold successfully";
+      this.quantity = 1;
 
     } else {
-      this.msg = "either you do not hold this stock or not enough quantity";
+      this.msg = "Not enough shares to sell";
     }
   }
-
 }
