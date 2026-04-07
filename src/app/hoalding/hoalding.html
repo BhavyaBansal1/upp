@@ -1,24 +1,37 @@
+<!-- <div class="container mt-4">
+  <div class="row justify-content-start">
+    <div class="col-md-4">
+      <div class="card portfolio-card text-center shadow p-3">
+        <h5>Total Portfolio Value</h5>
+        <h3>${{ portfolioValue }}</h3>
+      </div>
+    </div>
+  </div>
+</div> -->
+
 <div class="container mt-4">
 
+<div class="container mt-4">
+<button class="btn btn-success me-2" (click)="pagerelod()" >Refresh</button>
   <!-- Center the content -->
   <div class="row justify-content-center">
 
-    <!-- Control width here -->
-    <div class="col-md-6">
-
-      <!-- STOCKS -->
+    
+    <div class="col-md-12">
       <div class="card mb-3">
         <div class="card-header bg-primary text-white">
           Stocks
         </div>
 
-        <table class="table table-sm mb-0">
+        <table class="table table-sm mb-6">
 
           <thead class="table-dark">
             <tr>
               <th class="text-start">Holdings</th>
               <th class="text-center">Quantity</th>
+              <th class="text-end">Avgpriceprice</th>
               <th class="text-end">price</th>
+              <th class="text-end">Marketvalue</th>
               <th class="text-end">Time</th>
 
             </tr>
@@ -29,6 +42,8 @@
               <td class="text-start">{{item.stockName}}</td>
               <td class="text-center">{{item.quantity}}</td>
               <td class="text-center">{{item.price}}</td>
+              <td class="text-center">{{item.price}}</td>
+              <td class="text-center">{{item.price*item.quantity}}</td>
               <td class="text-end">
                 {{item.currenttime | date:'yyyy-MM-dd HH:mm:ss'}}
               </td>

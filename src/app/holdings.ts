@@ -46,18 +46,20 @@ export class Holdings {
         check.currenttime = Date.now();
         check.price = price;
         check.type = type;
+        check.avgprive=24;
       }
-    } else {
-      if (quantity > 0) {
-        this.list.push({
-          stockName,
-          quantity,
-          currenttime: Date.now(),
-          type,
-          price
-        });
-      }
-    }
+    } 
+    // else {
+    //   if (quantity > 0) {
+    //     this.list.push({
+    //       stockName,
+    //       quantity,
+    //       currenttime: Date.now(),
+    //       type,
+    //       price
+    //     });
+    //   }
+    // }
   }
 
   sell(stockName: string, quantity: number, currenttime: any) {

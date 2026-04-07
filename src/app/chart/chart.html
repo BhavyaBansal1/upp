@@ -3,7 +3,7 @@
   <div class="row">
 
     <div 
-      class="col-md-6 mb-4"
+      class="col-md-3 mb-4"
       *ngFor="let stock of stocks; let i = index"
     >
       <div class="card p-3">
@@ -11,7 +11,6 @@
           {{stock.name}} - 5 Year Price Chart
         </h6>
 
-        <!-- Angular reference -->
         <canvas #chartCanvas></canvas>
 
       </div>

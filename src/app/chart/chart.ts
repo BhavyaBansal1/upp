@@ -12,10 +12,8 @@ import { RouterOutlet } from '@angular/router';
 })
 export class ChartComponent implements AfterViewInit {
 
-  // ✅ Get all canvas elements
   @ViewChildren('chartCanvas') canvases!: QueryList<ElementRef>;
 
-  // ✅ Dummy stock data
   stocks = [
     { name: 'Microsoft', basePrice: 100 },
     { name: 'Tata', basePrice: 50 },
@@ -57,8 +55,8 @@ export class ChartComponent implements AfterViewInit {
   createCharts() {
     const years = this.getYears();
 
-    this.canvases.forEach((canvasRef, index) => {
-      const ctx = canvasRef.nativeElement;
+    this.canvases.forEach((canvas, index) => {
+      const ctx = canvas.nativeElement;
 
       new Chart(ctx, {
         type: 'line',
@@ -67,7 +65,7 @@ export class ChartComponent implements AfterViewInit {
           datasets: [{
             label: `${this.stocks[index].name} Price`,
             data: this.generateData(this.stocks[index].basePrice),
-            fill: false,
+            fill: true,
             tension: 0.4
           }]
         },

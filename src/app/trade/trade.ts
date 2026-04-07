@@ -73,7 +73,6 @@ export class Trade implements OnInit {
     if (this.holdingservice.sell(this.stockName, this.quantity, this.currenttime)) {
 
       this.balanceService.sell(cost);
-
       this.Transactions.push({
         stockName: this.stockName,
         Quantity: this.quantity,

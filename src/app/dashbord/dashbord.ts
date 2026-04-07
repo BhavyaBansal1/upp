@@ -34,31 +34,18 @@ updatePortfolioValue() {
   this.portfolioValue = total;
 }
 
-  
+// chart staarts from here
   getstocks() {
-    return this.holdingservice
-      .getAllholdings()
-      .filter(s => s.type === 'stock');
+    return this.holdingservice.getAllholdings();
   }
-
-  // ✅ Get MUTUAL FUNDS from service
-  getmutualfund() {
-    return this.holdingservice
-      .getAllholdings()
-      .filter(s => s.type === 'Mutualfunds');
-  }
-
   ngAfterViewInit() {
     setTimeout(() => {
       this.createStockChart();
-      this.createMFChart();
+      // this.createMFChart();
     }, 300);
   }
-
-  // 🟦 STOCK BAR CHART
   createStockChart() {
     const stocks = this.getstocks();
-
     new Chart("stockChart", {
       type: 'bar',
       data: {
@@ -73,22 +60,20 @@ updatePortfolioValue() {
       }
     });
   }
+  // createMFChart() {
+  //   const mf = this.getmutualfund();
 
-  // 🟩 MUTUAL FUND PIE CHART
-  createMFChart() {
-    const mf = this.getmutualfund();
-
-    new Chart("mfChart", {
-      type: 'pie',
-      data: {
-        labels: mf.map(m => m.stockName),
-        datasets: [{
-          data: mf.map(m => m.quantity)
-        }]
-      },
-      options: {
-        responsive: true
-      }
-    });
-  }
+  //   new Chart("mfChart", {
+  //     type: 'pie',
+  //     data: {
+  //       labels: mf.map(m => m.stockName),
+  //       datasets: [{
+  //         data: mf.map(m => m.quantity)
+  //       }]
+  //     },
+  //     options: {
+  //       responsive: true
+  //     }
+  //   });
+  // }
 }
