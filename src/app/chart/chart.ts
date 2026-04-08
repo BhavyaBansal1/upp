@@ -24,8 +24,6 @@ export class ChartComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.createCharts();
   }
-
-  // 📈 Generate dummy price data (5 years)
   generateData(basePrice: number): number[] {
     const data: number[] = [];
     let price = basePrice;

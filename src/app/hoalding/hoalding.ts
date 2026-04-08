@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Holdings } from '../holdings';
 import { CommonModule } from '@angular/common';
@@ -14,25 +14,21 @@ export class Hoalding {
 
   portfolioValue: number = 0;
   list1: any[] = [];
+  intervalid:any;
+  autore:boolean=false;
 
-  constructor(public holdingservice: Holdings) {
+  constructor(public holdingservice: Holdings,public cd:ChangeDetectorRef) {
     this.getallHoldings();
   }
-
-  ngOnInit() {
-    this.updatePortfolioValue();
-
-  }
-
-  updatePortfolioValue() {
-    const holdings = this.holdingservice.getAllholdings();
-    let total = 0;
-    for (let i of holdings) {
-  total +=i.quantity * i.price;
-}
-
-    this.portfolioValue = total;
-  }
+  
+//   updatePortfolioValue() {
+//     const holdings = this.holdingservice.getAllholdings();
+//     let total = 0;
+//     for (let i of holdings) {
+//   total +=i.quantity * i.price;
+// }
+//     this.portfolioValue = total;
+//   }
 
   getallHoldings() {
     this.list1 = this.holdingservice.getAllholdings();
@@ -44,7 +40,24 @@ export class Hoalding {
   // .filter(s => s.type === 'stock')
 
   pagerelod() {
-    this.holdingservice.updatePrices(); 
-    this.updatePortfolioValue();       
+    this.holdingservice.updatePrices();       
+  }
+  togle_load(){
+    this.autore=!this.autore;
+    if(this.autore){
+    this.intervalid= window.setInterval(() => {
+      console.log("autorefresh working")
+          this.pagerelod();  
+          // this.updatePortfolioValue;
+           this.cd.detectChanges();
+      },5000)
+    }
+    else{
+      if(this.intervalid){
+        clearInterval(this.intervalid);
+      }
+    }
+
+
   }
 }

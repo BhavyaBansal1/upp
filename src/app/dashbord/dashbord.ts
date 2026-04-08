@@ -5,6 +5,7 @@ import Chart from 'chart.js/auto';
 import { Holdings } from '../holdings';
 import { ChartComponent } from '../chart/chart';
 import { balanceservice } from '../balanceservice';
+import { BalanceService } from '../balance-service';
 
 @Component({
   selector: 'app-dashbord',
@@ -15,14 +16,17 @@ import { balanceservice } from '../balanceservice';
 })
 export class Dashbord implements AfterViewInit {
 portfolioValue:number=0;
-  constructor(public holdingservice: Holdings, public balanceservice:balanceservice) {}
+bal:number=0;
+  constructor(public holdingservice: Holdings,public balanceService:BalanceService) {}
   ngOnInit() {
   this.updatePortfolioValue();
-
-  // Update every 1s to reflect dynamic stock price
+  // this.getbanceamount();
   setInterval(() => {
-    this.updatePortfolioValue();
-  }, 1000);
+   this.updatePortfolioValue();
+  }, 5);
+  // setInterval(() => {
+  //  this.getbanceamount();
+  // }, );
 }
 updatePortfolioValue() {
   const holdings = this.holdingservice.getAllholdings(); // get all stocks
@@ -33,6 +37,11 @@ updatePortfolioValue() {
 
   this.portfolioValue = total;
 }
+// getbanceamount(){
+//   const a=this.balanceService.getBalance;
+//   this.bal=a;
+
+// }
 
 // chart staarts from here
   getstocks() {
@@ -76,4 +85,5 @@ updatePortfolioValue() {
   //     }
   //   });
   // }
+  
 }

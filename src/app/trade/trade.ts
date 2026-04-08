@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class Trade implements OnInit {
 
-  price: number = 10;
+  price: number = 90;
   quantity: number =0;
   stockName: string = '';
   msg: string = '';
@@ -28,9 +28,9 @@ export class Trade implements OnInit {
 
   ngOnInit() {
     setInterval(() => {
-      let change = ((Math.random()*(10))+5);
-      this.price =  Math.round(this.price + change);
-    }, 0);
+        let change = (Math.random() * 10 - 5);
+    this.price = Math.round(this.price + change);
+    }, 3000);
   }
 
   calculateOrderValue() {

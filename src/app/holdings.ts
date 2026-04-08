@@ -19,7 +19,7 @@ export class Holdings {
       quantity: 25,
       currenttime: Date.now(),
       type: 'stock',
-      price: 50,
+      price: 168,
       avgPrice: 196
     },
     {
@@ -46,6 +46,7 @@ updatePrices() {
     let change = (Math.random() * 10 - 5);
     stock.price = Math.round(stock.price + change);
     // stock.currenttime = Date.now();
+    this.list=[...this.list];
   }
 }
 
