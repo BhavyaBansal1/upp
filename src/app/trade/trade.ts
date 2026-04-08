@@ -28,9 +28,9 @@ export class Trade implements OnInit {
 
   ngOnInit() {
     setInterval(() => {
-      let change = (Math.random() * 4 - 2);
-      this.price = Math.max(1, Math.round(this.price + change));
-    }, 500);
+      let change = ((Math.random()*(10))+5);
+      this.price =  Math.round(this.price + change);
+    }, 0);
   }
 
   calculateOrderValue() {

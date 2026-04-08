@@ -11,30 +11,43 @@ export class Holdings {
       quantity: 10,
       currenttime: Date.now(),
       type: 'stock',
-      price: 100
+      price: 100,
+     avgPrice: 150
     },
     {
       stockName: 'tata',
       quantity: 25,
       currenttime: Date.now(),
       type: 'stock',
-      price: 50
+      price: 50,
+      avgPrice: 196
     },
     {
       stockName: 'tesla',
       quantity: 5,
       currenttime: Date.now(),
       type: 'stock',
-      price: 200
+      price: 200,
+      avgPrice: 189
     },
     {
       stockName: 'aapl',
       quantity: 15,
       currenttime: Date.now(),
       type: 'stock',
-      price: 150
+      price: 150,
+      avgPrice: 156
     }
   ];
+
+  
+updatePrices() {
+  for (let stock of this.list) {
+    let change = (Math.random() * 10 - 5);
+    stock.price = Math.round(stock.price + change);
+    // stock.currenttime = Date.now();
+  }
+}
 
   buy(stockName: string, quantity: number, currenttime: any, type: string, price: number) {
 
@@ -46,20 +59,9 @@ export class Holdings {
         check.currenttime = Date.now();
         check.price = price;
         check.type = type;
-        check.avgprive=24;
+        check.avgprive = 24;
       }
-    } 
-    // else {
-    //   if (quantity > 0) {
-    //     this.list.push({
-    //       stockName,
-    //       quantity,
-    //       currenttime: Date.now(),
-    //       type,
-    //       price
-    //     });
-    //   }
-    // }
+    }
   }
 
   sell(stockName: string, quantity: number, currenttime: any) {
@@ -79,7 +81,6 @@ export class Holdings {
     return this.list;
   }
 
-  
   getQuantity(stockName: string): number {
     const stock = this.list.find(s => s.stockName === stockName);
     return stock ? stock.quantity : 0;

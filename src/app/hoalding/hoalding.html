@@ -13,6 +13,7 @@
 
 <div class="container mt-4">
 <button class="btn btn-success me-2" (click)="pagerelod()" >Refresh</button>
+<button class="btn btn-primary me-2" (click)="pagerelod()" >Autorefresh</button>
   <!-- Center the content -->
   <div class="row justify-content-center">
 
@@ -41,7 +42,7 @@
             <tr *ngFor="let item of getstocks()">
               <td class="text-start">{{item.stockName}}</td>
               <td class="text-center">{{item.quantity}}</td>
-              <td class="text-center">{{item.price}}</td>
+              <td class="text-center">{{item.avgPrice}}</td>
               <td class="text-center">{{item.price}}</td>
               <td class="text-center">{{item.price*item.quantity}}</td>
               <td class="text-end">
