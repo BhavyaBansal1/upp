@@ -32,6 +32,7 @@
               <th class="text-center">Quantity</th>
               <th class="text-end">Avgpriceprice</th>
               <th class="text-end">price</th>
+              <th class="text-end">Profit/loss</th>
               <th class="text-end">Marketvalue</th>
               <th class="text-end">Time</th>
 
@@ -44,6 +45,10 @@
               <td class="text-center">{{item.quantity}}</td>
               <td class="text-center">{{item.avgPrice}}</td>
               <td class="text-center">{{item.price}}</td>
+              <td class="text-center"  [ngClass]="{'text-danger':(item.price-item.avgPrice) < 0 ,
+              'text-success':(item.price-item.avgPrice) > 0 }">
+                {{item.price-item.avgPrice}}
+              </td>
               <td class="text-center">{{item.price*item.quantity}}</td>
               <td class="text-end">
                 {{item.currenttime | date:'yyyy-MM-dd HH:mm:ss'}}

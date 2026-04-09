@@ -9,19 +9,15 @@
 
         <h6>5 Month Returns</h6>
 
-        <!-- 🥧 Small Centered Pie Chart -->
         <div style="display:flex; justify-content:center;">
           <div style="width:200px; height:200px;">
             <canvas #pieChartCanvas></canvas>
           </div>
         </div>
-
-        <!-- 📊 Horizontal Monthly Data -->
         <div class="mt-3 d-flex justify-content-around flex-wrap text-center">
 
           <div *ngFor="let m of months; let i = index" class="mx-2">
             
-            <!-- Optional color indicator -->
             <div>
               <span style="display:inline-block;width:10px;height:10px;
               background-color: {{ ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF'][i] }}
@@ -45,7 +41,7 @@
   <div class="row">
 
     <div 
-      class="col-md-3 mb-4"
+      class="col-md-3 mb-3"
       *ngFor="let stock of stocks; let i = index"
     >
       <div class="card p-3 shadow-sm">
@@ -67,11 +63,41 @@
   <!-- CHARTS -->
   <div class="row justify-content-center mb-3">
 
-    <!-- STOCK CHART -->
-    <div class="col-md-4 text-center">
+    <div class="col-md-10 text-center">
+      <!-- <div class="row-md-30 text-center"></div> -->
       <div class="card p-3">
         <h6>Advisory Tips </h6>
         <canvas #advisorychartcanvas></canvas>
       </div>
     </div>
+<div class="row justify-content-center mb-4">
+
+
+  
+<div class="col-14">
+  <div class="col-md-100 text-center"></div>
+
+  <div class="card p-3 shadow-sm text-center">
+    <h6>User Segregation</h6>
+
+    <div style="display: flex; justify-content: center;">
+      <div style="width: 200px; height: auto;">
+
+        <!-- Chart -->
+        <canvas #segmentchartcanvas></canvas>
+
+        <!-- Text below chart -->
+        <div class="mt-2">
+          <span class="d-block">
+            <strong>Risk:</strong> {{ riskProfilech()}}
+          </span>
+          <span class="d-block">
+            <strong>Behavior:</strong> {{ tradingActivitySegment() }}
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
 
