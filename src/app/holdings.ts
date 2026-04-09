@@ -13,6 +13,13 @@ export class Holdings {
       type: 'stock',
       price: 100,
      avgPrice: 150
+    },{
+    stockName: 'Microfund',
+      quantity: 56,
+      currenttime: Date.now(),
+      type: 'Microfund',
+      price: 169,
+     avgPrice: 150
     },
     {
       stockName: 'tata',

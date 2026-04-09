@@ -16,17 +16,15 @@ import { BalanceService } from '../balance-service';
 })
 export class Dashbord implements AfterViewInit {
 portfolioValue:number=0;
-bal:number=0;
-  constructor(public holdingservice: Holdings,public balanceService:BalanceService) {}
+  constructor(public holdingservice: Holdings,  public balanceService: BalanceService) {}
   ngOnInit() {
   this.updatePortfolioValue();
-  // this.getbanceamount();
+  this.createStockChart();
+  // Update every 1s to reflect dynamic stock price
   setInterval(() => {
-   this.updatePortfolioValue();
-  }, 5);
-  // setInterval(() => {
-  //  this.getbanceamount();
-  // }, );
+    this.updatePortfolioValue();
+  }, 1000);
+
 }
 updatePortfolioValue() {
   const holdings = this.holdingservice.getAllholdings(); // get all stocks
@@ -37,21 +35,17 @@ updatePortfolioValue() {
 
   this.portfolioValue = total;
 }
-// getbanceamount(){
-//   const a=this.balanceService.getBalance;
-//   this.bal=a;
-
-// }
 
 // chart staarts from here
   getstocks() {
     return this.holdingservice.getAllholdings();
   }
   ngAfterViewInit() {
+     this.createStockChart();
     setTimeout(() => {
       this.createStockChart();
       // this.createMFChart();
-    }, 300);
+    }, 0);
   }
   createStockChart() {
     const stocks = this.getstocks();
@@ -85,5 +79,4 @@ updatePortfolioValue() {
   //     }
   //   });
   // }
-  
 }
