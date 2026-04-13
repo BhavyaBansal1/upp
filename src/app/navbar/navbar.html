@@ -1,32 +1,39 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
 
-    <!-- Brand -->
-    <a class="navbar-brand" href="#">Stock App</a>
+    <a class="navbar-brand" routerLink="/">Stock App</a>
 
-    <!-- Toggle button (for mobile) -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <div class="collapse navbar-collapse">
 
-    <!-- Links -->
-    <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
 
         <li class="nav-item">
-          <a class="nav-link" routerLink="/dashbord" routerLinkActive="active">Dashboard</a>
+          <a class="nav-link" routerLink="/dashbord">Dashboard</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" routerLink="/trade" routerLinkActive="active">Trade</a>
+          <a class="nav-link" routerLink="/trade">Trade</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" routerLink="/sumary" routerLinkActive="active">Summary</a>
+          <a class="nav-link" routerLink="/sumary">Summary</a>
         </li>
 
       </ul>
-    </div>
 
+      <!-- USER INFO (FIXED) -->
+      <div class="d-flex align-items-center ms-3" *ngIf="auth.getUser() as user">
+
+        <span class="text-white me-2">
+          Welcome {{ user.name }}
+        </span>
+
+        <button class="btn btn-outline-light btn-sm" (click)="auth.logout()">
+          Logout
+        </button>
+
+      </div>
+
+    </div>
   </div>
 </nav>
