@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BalanceService } from '../balance-service';
 import { Holdings } from '../holdings';
@@ -13,13 +13,14 @@ import { CommonModule } from '@angular/common';
 export class Trade implements OnInit {
 
   price: number = 90;
-  quantity: number = 0;
+  quantity: number = 1;
   stockName: string = '';
   msg: string = '';
   Ordervalue: number = 0;
   Transactions: any[] = [];
   currenttime: any;
   holdingtype: string = 'stock';
+  intervalId: any;
 
   constructor(
     public balanceService: BalanceService,
@@ -27,42 +28,55 @@ export class Trade implements OnInit {
   ) {}
 
   ngOnInit() {
-    const data = localStorage.getItem('transactions');
-    this.Transactions = data ? JSON.parse(data) : [];
-      localStorage.removeItem('transactions');
-
-    setInterval(() => {
-      let change = (Math.random() * 10 - 5);
-      this.price = Math.round(this.price + change);
-    }, 3000);
+    try {
+      const data = localStorage.getItem('transactions');
+      this.Transactions = data ? JSON.parse(data) : [];
+    } catch (e) {
+      console.error('LocalStorage error:', e);
+      this.Transactions = [];
+    }
+      try {
+        let change = (Math.random() * 10 - 5);
+        this.price = Math.max(1, Math.round(this.price + change));
+      } catch (e) {
+        console.error('Price update error:', e);
+      }
   }
 
   calculateOrderValue() {
-    this.Ordervalue = this.price * this.quantity;
+    try {
+      this.Ordervalue = this.price * this.quantity;
+    } catch (e) {
+      console.error(e);
+    }
   }
-
-  saveRecentTransactions(tx: any) {
-    this.Transactions = this.Transactions.slice(-5); // keep last 5
-    localStorage.setItem('transactions', JSON.stringify(this.Transactions));
+  saveRecentTransactions() {
+    try {
+      this.Transactions = this.Transactions.slice(0,5);
+      localStorage.setItem('transactions', JSON.stringify(this.Transactions));
+    } catch (e) {
+      console.error('Save transaction error:', e);
+    }
   }
-
   buy() {
-    this.currenttime = Date.now();
-    const cost = this.quantity * this.price;
-
-    if (cost > this.balanceService.balanceamount) {
-      this.msg = "Not enough balance";
-    } else {
+    try {
+      const cost = this.quantity * this.price;
+      if (!this.stockName) {
+        this.msg = "Enter stock name";
+        return;
+      }
+      if (cost > this.balanceService.balanceamount) {
+        this.msg = "Not enough balance";
+        return;
+      }
       this.balanceService.buys(cost);
-
       this.holdingservice.buy(
         this.stockName,
         this.quantity,
-        this.currenttime,
+        Date.now(),
         this.holdingtype,
         this.price
       );
-
       this.Transactions.push({
         stockName: this.stockName,
         Quantity: this.quantity,
@@ -70,22 +84,27 @@ export class Trade implements OnInit {
         CurrentTime: Date.now(),
         type: 'Buy'
       });
+      this.saveRecentTransactions();
+      this.msg = "Stocks bought checkfully";
 
-    
-      this.saveRecentTransactions(this.Transactions[this.Transactions.length - 1]);
-
-      this.msg = "Stocks bought successfully";
-      this.quantity = 1;
+    } catch (error) {
+      console.error(error);
+      this.msg = "Error while buying";
     }
   }
-
   sell() {
-    const cost = this.quantity * this.price;
-
-    if (this.holdingservice.sell(this.stockName, this.quantity, this.currenttime)) {
-
+    try {
+      const cost = this.quantity * this.price;
+      const check = this.holdingservice.sell(
+        this.stockName,
+        this.quantity,
+        Date.now()
+      );
+      if (!check) {
+        this.msg = "Not enough shares";
+        return;
+      }
       this.balanceService.sell(cost);
-
       this.Transactions.push({
         stockName: this.stockName,
         Quantity: this.quantity,
@@ -94,14 +113,12 @@ export class Trade implements OnInit {
         CurrentTime: Date.now()
       });
 
-    
-      this.saveRecentTransactions(this.Transactions[this.Transactions.length - 1]);
+      this.saveRecentTransactions();
+      this.msg = "Stocks sold checkfully";
 
-      this.msg = "Stocks sold successfully";
-      this.quantity = 1;
-
-    } else {
-      this.msg = "Not enough shares to sell";
+    } catch (error) {
+      console.error(error);
+      this.msg = "Error while selling";
     }
   }
 }
