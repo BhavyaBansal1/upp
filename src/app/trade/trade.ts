@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 export class Trade implements OnInit {
 
   price: number = 90;
-  quantity: number =0;
+  quantity: number = 0;
   stockName: string = '';
   msg: string = '';
   Ordervalue: number = 0;
@@ -27,14 +27,23 @@ export class Trade implements OnInit {
   ) {}
 
   ngOnInit() {
+    const data = localStorage.getItem('transactions');
+    this.Transactions = data ? JSON.parse(data) : [];
+      localStorage.removeItem('transactions');
+
     setInterval(() => {
-        let change = (Math.random() * 10 - 5);
-    this.price = Math.round(this.price + change);
+      let change = (Math.random() * 10 - 5);
+      this.price = Math.round(this.price + change);
     }, 3000);
   }
 
   calculateOrderValue() {
     this.Ordervalue = this.price * this.quantity;
+  }
+
+  saveRecentTransactions(tx: any) {
+    this.Transactions = this.Transactions.slice(-5); // keep last 5
+    localStorage.setItem('transactions', JSON.stringify(this.Transactions));
   }
 
   buy() {
@@ -62,8 +71,11 @@ export class Trade implements OnInit {
         type: 'Buy'
       });
 
+    
+      this.saveRecentTransactions(this.Transactions[this.Transactions.length - 1]);
+
       this.msg = "Stocks bought successfully";
-      this.quantity = 1; // optional reset
+      this.quantity = 1;
     }
   }
 
@@ -73,6 +85,7 @@ export class Trade implements OnInit {
     if (this.holdingservice.sell(this.stockName, this.quantity, this.currenttime)) {
 
       this.balanceService.sell(cost);
+
       this.Transactions.push({
         stockName: this.stockName,
         Quantity: this.quantity,
@@ -80,6 +93,9 @@ export class Trade implements OnInit {
         type: "Sell",
         CurrentTime: Date.now()
       });
+
+    
+      this.saveRecentTransactions(this.Transactions[this.Transactions.length - 1]);
 
       this.msg = "Stocks sold successfully";
       this.quantity = 1;
