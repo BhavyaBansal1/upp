@@ -59,7 +59,7 @@ Advisortip=[
 
   segments=['stocks','funds'];
 
-  ngAfterViewInit() {
+  ngAfterViewInit() {try{
     setInterval(()=>{
       this.createCharts();
       this.createPieChart();
@@ -67,6 +67,10 @@ Advisortip=[
       this.calculatepercentage();
       this.segmachart();},1000)
   }
+  catch(e){
+    console.error(e);
+  }
+}
 
   generateData(basePrice: number): number[] {
     const data: number[] = [];
@@ -91,9 +95,8 @@ Advisortip=[
     ];
   }
 
-  // 🔹 Create Line Charts
   createCharts() {
-
+try{
     const years = this.getYears();
 
     this.canvases.forEach((canvas, index) => {
@@ -116,10 +119,13 @@ Advisortip=[
       });
     });
   }
+  catch(e){
+    console.error(e);
+  }
+}
   createPieChart() {
-    
+    try{
     const ctx = this.pieCanvas.nativeElement;
-
     new Chart(ctx, {
       type: 'pie',
       data: {
@@ -140,10 +146,12 @@ Advisortip=[
         responsive: true
       }
     });
+  }catch(e){
+    console.error(e);
   }
+}
 
-Advisorychart() {
-
+Advisorychart() {try{
   const ctx = this.advisorycanvas.nativeElement;
 
   new Chart(ctx, {
@@ -159,9 +167,13 @@ Advisorychart() {
       responsive: true
     }
   });
+}catch(e){
+  console.error(e);
+}
 }
 
 segmachart(){
+  try{
   const ctx = this.segmentcanvas.nativeElement;
   new Chart(ctx,{
     type:'pie',
@@ -176,8 +188,12 @@ segmachart(){
     ]      }]
     }
   })
+}catch(e){
+  console.error(e);
+}
 }
   riskProfilech(){
+    try{
     const stockPct = this.totalst/this.totalc;
     if (stockPct >= 0.7) {
       return 'Growth-Oriented';
@@ -188,7 +204,12 @@ segmachart(){
 
     return 'Conservative';
   }
+  catch{
+    return 'Unknownn'
+  }
+}
    tradingActivitySegment()  {
+    try{
     const recentCount = this.totalc;
     if (recentCount >= 70) {
       return 'Active Trader';
@@ -200,6 +221,10 @@ segmachart(){
 
     return 'Passive Investor';
   }
+  catch{
+    return 'Unknown'
+  }
+}
 
 
 

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav  *ngIf="auth.isLoggedIn()" class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
 
     <a class="navbar-brand" routerLink="/">Stock App</a>
@@ -10,9 +10,11 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/dashbord">Dashboard</a>
         </li>
-
+           <!-- <div class="*ngIf">
+            user.r -->
         <li class="nav-item">
-          <a class="nav-link" routerLink="/trade">Trade</a>
+         
+          <a *ngIf="auth.getrole() ==='Trader' "class="nav-link" routerLink="/trade">Trade</a>
         </li>
 
         <li class="nav-item">
@@ -25,7 +27,7 @@
       <div class="d-flex align-items-center ms-3" *ngIf="auth.getUser() as user">
 
         <span class="text-white me-2">
-          Welcome {{ user.name }}
+          Welcome {{ user.name.split("@")[0].trim() }}
         </span>
 
         <button class="btn btn-outline-light btn-sm" (click)="auth.logout()">

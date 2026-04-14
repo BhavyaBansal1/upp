@@ -1,12 +1,39 @@
-<h2>Sign Up</h2>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
 
-<input [(ngModel)]="email" placeholder="Email">
-<br><br>
+      <div class="card shadow p-4">
 
-<input [(ngModel)]="password" type="password" placeholder="Password">
-<br><br>
+        <h3 class="text-center mb-4">Signup</h3>
 
-<button (click)="signup()">Sign Up</button>
+        <!-- Email -->
+        <div class="mb-3">
+          <input type="email" class="form-control"  [(ngModel)]="email" placeholder="Email"  />
+        </div>
 
-<p style="color:green">{{ success }}</p>
-<p style="color:red">{{ error }}</p>
+        <!-- Password -->
+        <div class="mb-3">
+          <input   type="password" class="form-control" [(ngModel)]="password" placeholder="Password"  />
+        </div>
+        <div class="mb-3">
+      <label class="form-label">Role</label>
+      <select class="form-control" [(ngModel)]="Role">
+        <option value="Trader">Trader</option>
+        <option value="NonTrader">NonTrader</option>
+      </select>
+    </div>
+
+        <!-- Login Button -->
+        <button class="btn btn-primary w-100 mb-2" (click)="signup()">
+          Login
+        </button>
+        <!-- Error Message -->
+        <p *ngIf="error" class="text-danger text-center mt-2">
+          {{ error }}
+        </p>
+
+      </div>
+
+    </div>
+  </div>
+</div>

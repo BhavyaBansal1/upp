@@ -4,37 +4,46 @@ import { Sumary } from './sumary/sumary';
 import { Trade } from './trade/trade';
 import { Holdings } from './holdings';
 import { Hoalding } from './hoalding/hoalding';
-import { Login } from './login/login';
 import { SignupComponent } from './signup-component/signup-component';
+import { AuthGuard } from './auth-guard';
+import { Login } from './login/login';
+import { controlauthGuard } from './controlauth-guard';
 
 export const routes: Routes = [
 
   {
     path: '',
-    component: Login
+    component: Login,
+    data:{hideNavbar:true}
   },
   {
    path: 'signup', 
-   component:SignupComponent
+   component: SignupComponent
   },
   {
     path: 'dashbord',
-    component: Dashbord
+    component: Dashbord,
+    canActivate:[AuthGuard]
   },
   {
     path: 'trade',
-    component: Trade
+    component: Trade,
+    canActivate:[AuthGuard , controlauthGuard]
+
   },
   {
     path: 'sumary',
-    component: Sumary
+    component: Sumary,
+    canActivate:[AuthGuard]
   },
   {
     path: 'hold',
-    component: Hoalding
+    component: Hoalding,
+    canActivate:[AuthGuard]
   },
   {
     path: '**',
-    redirectTo: ''
+    redirectTo: '',
+    canActivate:[AuthGuard]
   }
 ];

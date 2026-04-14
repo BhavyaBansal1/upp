@@ -15,15 +15,14 @@ import { FormsModule } from '@angular/forms';
   email = '';
   password = '';
   error = '';
+  Role='';
   success = '';
 
   constructor(private auth:AuthService, private router:Router) {}
 
   signup() {
-
-    const ok = this.auth.signup(this.email, this.password);
-
-    if (ok) {
+    const sign = this.auth.signup(this.email, this.password,this.Role);
+    if (sign) {
       this.success = 'Signup successful! Please login.';
       this.error = '';
       this.router.navigate(['/']); // go to login

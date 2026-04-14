@@ -39,10 +39,16 @@ export class Hoalding {
   }
   // .filter(s => s.type === 'stock')
 
-  pagerelod() {
+  pagerelod() {try{
+
+  
     this.holdingservice.updatePrices();       
+  }catch(e){
+    console.error(e);
   }
+}
   togle_load(){
+    try{
     this.autore=!this.autore;
     if(this.autore){
     this.intervalid= window.setInterval(() => {
@@ -57,7 +63,10 @@ export class Hoalding {
         clearInterval(this.intervalid);
       }
     }
-
+  }
+catch(e){
+  console.error(e);
+}
 
   }
 }

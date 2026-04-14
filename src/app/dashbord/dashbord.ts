@@ -27,6 +27,7 @@ portfolioValue:number=0;
 
 }
 updatePortfolioValue() {
+  try{
   const holdings = this.holdingservice.getAllholdings(); // get all stocks
   let total = 0;
   holdings.forEach(stock => {
@@ -34,9 +35,11 @@ updatePortfolioValue() {
   });
 
   this.portfolioValue = total;
+} catch(e){
+  console.error(e);
+}
 }
 
-// chart staarts from here
   getstocks() {
     return this.holdingservice.getAllholdings();
   }

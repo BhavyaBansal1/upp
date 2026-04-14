@@ -7,26 +7,26 @@ export class AuthService {
   constructor(public rou: Router){}
     public users: any[] = JSON.parse(localStorage.getItem('users') || '[]');
 
-  signup(email: string, password: string): boolean {
+  signup(email: string, password:string, role:any): boolean {
 
     const exists = this.users.find(u => u.email === email);
     if (exists) {
       return false; 
     }
-    this.users.push({ email, password });
+    this.users.push({ email, password,role });
     localStorage.setItem('users', JSON.stringify(this.users));
 
     return true;
   }
-  login(email: string, password: string): boolean {
+  login(email: string, password: string,role:any): boolean {
 
     if (this.users.find(u => u.email === email && u.password=== password )) {
 
       const toke = {
+        role:role,
         name:email.split("@")[0].trim(),
         email:email
       };
-
       const token = btoa(JSON.stringify(toke));
       localStorage.setItem('token', token);
 
@@ -46,8 +46,17 @@ export class AuthService {
   }
 
   logout() {
-  localStorage.removeItem('token');
-  
-  this.rou.navigate(['/']);   // redirect to login
+  localStorage.removeItem('token');  
+  this.rou.navigate(['/']); 
+}
+getrole(){
+  const t=localStorage.getItem('token');
+  if(!t){
+    return null;
+  }
+  const user=JSON.parse(atob(t));
+  console.log(user.role);
+  return user.role;
+
 }
 }
