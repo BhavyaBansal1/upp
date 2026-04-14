@@ -1,0 +1,12 @@
+<h2>Sign Up</h2>
+
+<input [(ngModel)]="email" placeholder="Email">
+<br><br>
+
+<input [(ngModel)]="password" type="password" placeholder="Password">
+<br><br>
+
+<button (click)="signup()">Sign Up</button>
+
+<p style="color:green">{{ success }}</p>
+<p style="color:red">{{ error }}</p>
