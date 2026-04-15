@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -7,34 +8,39 @@ export class AuthService {
   constructor(public rou: Router){}
     public users: any[] = JSON.parse(localStorage.getItem('users') || '[]');
 
-  signup(email: string, password:string, role:any): boolean {
+  signup(email: string, password: string, role: any): Observable<boolean> {
 
-    const exists = this.users.find(u => u.email === email);
-    if (exists) {
-      return false; 
-    }
-    this.users.push({ email, password,role });
-    localStorage.setItem('users', JSON.stringify(this.users));
+  const users = JSON.parse(localStorage.getItem('users') || '[]');
 
-    return true;
+  const exists = users.find((u: any) => u.email === email);
+
+  if (exists) {
+    return of(false); // simulate API response
   }
-  login(email: string, password: string,role:any): boolean {
 
-    if (this.users.find(u => u.email === email && u.password=== password )) {
+  users.push({ email, password, role });
+  localStorage.setItem('users', JSON.stringify(users));
 
-      const toke = {
-        role:role,
-        name:email.split("@")[0].trim(),
-        email:email
-      };
-      const token = btoa(JSON.stringify(toke));
-      localStorage.setItem('token', token);
+  return of(true); // simulate API response
+}
+  login(email: string, password: string, role: any): Observable<boolean> {
 
-      return true;
-    }
+  if (this.users.find(u => u.email === email && u.password === password)) {
 
-    return false;
+    const toke = {
+      role: role,
+      name: email.split("@")[0].trim(),
+      email: email
+    };
+
+    const token = btoa(JSON.stringify(toke));
+    localStorage.setItem('token', token);
+
+    return of(true);   // simulate success response
   }
+
+  return of(false);    // simulate failure response
+}
 
   getUser() {
     const token = localStorage.getItem('token');

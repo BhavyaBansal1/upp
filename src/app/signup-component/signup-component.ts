@@ -21,7 +21,13 @@ import { FormsModule } from '@angular/forms';
   constructor(private auth:AuthService, private router:Router) {}
 
   signup() {
-    const sign = this.auth.signup(this.email, this.password,this.Role);
+    const sign = this.auth.signup(this.email, this.password,this.Role).subscribe(res => {
+  if (res) {
+    console.log('Signup success');
+  } else {
+    console.log('User exists');
+  }
+});
     if (sign) {
       this.success = 'Signup successful! Please login.';
       this.error = '';

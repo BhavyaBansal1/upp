@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-describe('SignupComponent - Pure TestBed (No Jasmine/Jest)', () => {
+describe('SignupComponent - Pure TestBed ', () => {
   let component: SignupComponent;
 
   let callCount = 0;
@@ -16,7 +16,6 @@ describe('SignupComponent - Pure TestBed (No Jasmine/Jest)', () => {
       callCount++;
       lastArgs = [email, password, role];
 
-      // simulate logic
       return email !== 'exists@test.com';
     }
   };
