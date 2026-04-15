@@ -1,4 +1,12 @@
-import { Component, AfterViewInit, ViewChildren, QueryList, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  ViewChildren,
+  QueryList,
+  ElementRef,
+  ViewChild
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import Chart from 'chart.js/auto';
 import { Holdings } from '../holdings';
@@ -24,30 +32,15 @@ export class ChartComponent implements AfterViewInit {
   constructor(public holdingservic: Holdings) {
     this.list1 = this.holdingservic.getAllholdings();
   }
+
   totalst: number = 0;
   totalmf: any = 0;
   totalc: any = 0;
   riskProfile: any;
-  charts: Chart[] = [];
-  pieChart!: Chart;
-  advisoryChart!: Chart;
-  segmentChart!: Chart;
-
-  calculatepercentage() {
-    this.totalst = 0;
-    this.totalmf = 0;
-
-    for (let i in this.list1) {
-      if (this.list1[i].type === 'stock') {
-        this.totalst += this.list1[i].quantity;
-      } else {
-        this.totalmf += this.list1[i].quantity;
-      }
-    }
-
-    this.totalc = this.totalst + this.totalmf;
-    console.log(this.totalc);
-  }
+  linechart: Chart[] = [];
+  piechart!: Chart;
+  advisorychart!: Chart;
+  segmentchart!: Chart;
 
   stocks = [
     { name: 'Microsoft', basePrice: 100 },
@@ -70,18 +63,29 @@ export class ChartComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     try {
-       this.createCharts();
-        this.createPieChart();
-        this.Advisorychart();
-        this.calculatepercentage();
-        this.segmachart();
       setInterval(() => {
         this.createCharts();
         this.createPieChart();
         this.Advisorychart();
         this.calculatepercentage();
         this.segmachart();
-      }, 100000);
+      }, 1000);
+
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  calculatepercentage() {
+    try {
+      for (let i in this.list1) {
+        if (this.list1[i].type === 'stock') {
+          this.totalst += this.list1[i].quantity;
+        } else {
+          this.totalmf += this.list1[i].quantity;
+        }
+      }
+      this.totalc = this.totalst + this.totalmf;
     } catch (e) {
       console.error(e);
     }
@@ -90,13 +94,16 @@ export class ChartComponent implements AfterViewInit {
   generateData(basePrice: number): number[] {
     const data: number[] = [];
     let price = basePrice;
+
     for (let i = 0; i < 5; i++) {
       const change = price * (Math.random() * 0.4 - 0.2);
       price = Math.max(10, Math.round(price + change));
       data.push(price);
     }
+
     return data;
   }
+
   getYears(): number[] {
     const currentYear = new Date().getFullYear();
     return [
@@ -111,21 +118,23 @@ export class ChartComponent implements AfterViewInit {
   createCharts() {
     try {
       const years = this.getYears();
-      this.charts.forEach(c => c.destroy());
-      this.charts = [];
+      if (this.linechart.length) {
+        this.linechart.forEach(c => c?.destroy());
+      }
+      this.linechart = [];
 
       this.canvases.forEach((canvas, index) => {
         const ctx = canvas.nativeElement;
 
         const chart = new Chart(ctx, {
           type: 'line',
-    data: {
+          data: {
             labels: years,
             datasets: [{
- label: `${this.stocks[index].name} Price`,
- data: this.generateData(this.stocks[index].basePrice),
- fill: true,
- tension: 0.4
+              label: `${this.stocks[index].name} Price`,
+              data: this.generateData(this.stocks[index].basePrice),
+              fill: true,
+              tension: 0.4
             }]
           },
           options: {
@@ -133,7 +142,7 @@ export class ChartComponent implements AfterViewInit {
           }
         });
 
-        this.charts.push(chart);
+        this.linechart.push(chart);
       });
 
     } catch (e) {
@@ -144,12 +153,11 @@ export class ChartComponent implements AfterViewInit {
   createPieChart() {
     try {
       const ctx = this.pieCanvas.nativeElement;
-
-      if (this.pieChart) {
-        this.pieChart.destroy();
+      if (this.piechart) {
+        this.piechart.destroy();
       }
 
-      this.pieChart = new Chart(ctx, {
+      this.piechart = new Chart(ctx, {
         type: 'pie',
         data: {
           labels: this.months,
@@ -157,11 +165,11 @@ export class ChartComponent implements AfterViewInit {
             label: 'Monthly Return (%)',
             data: this.monthlyReturns,
             backgroundColor: [
- '#FF6384',
- '#36A2EB',
- '#FFCE56',
- '#4BC0C0',
- '#9966FF'
+              '#FF6384',
+              '#36A2EB',
+              '#FFCE56',
+              '#4BC0C0',
+              '#9966FF'
             ]
           }]
         },
@@ -179,11 +187,11 @@ export class ChartComponent implements AfterViewInit {
     try {
       const ctx = this.advisorycanvas.nativeElement;
 
-      if (this.advisoryChart) {
-        this.advisoryChart.destroy();
+      if (this.advisorychart) {
+        this.advisorychart.destroy();
       }
 
-      this.advisoryChart = new Chart(ctx, {
+      this.advisorychart = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: this.Advisortip.map(a => a.name),
@@ -201,25 +209,28 @@ export class ChartComponent implements AfterViewInit {
       console.error(e);
     }
   }
+
   segmachart() {
     try {
       const ctx = this.segmentcanvas.nativeElement;
-      if (this.segmentChart) {
-        this.segmentChart.destroy();
+
+      if (this.segmentchart) {
+        this.segmentchart.destroy();
       }
-      this.segmentChart = new Chart(ctx, {
+
+      this.segmentchart = new Chart(ctx, {
         type: 'pie',
         data: {
           labels: this.segments,
           datasets: [{
             label: 'usersegmentation',
             data: [
- (this.totalst / this.totalc) * 100,
- (this.totalmf / this.totalc) * 100
+              ((this.totalst) / this.totalc) * 100,
+              ((this.totalmf) / this.totalc) * 100
             ],
             backgroundColor: [
- '#FF6384',
- '#36A2EB',
+              '#FF6384',
+              '#36A2EB',
             ]
           }]
         }
@@ -233,9 +244,11 @@ export class ChartComponent implements AfterViewInit {
   riskProfilech() {
     try {
       const stockPct = this.totalst / this.totalc;
+
       if (stockPct >= 0.7) return 'Growth-Oriented';
       if (stockPct >= 0.45) return 'Balanced';
       return 'Conservative';
+
     } catch {
       return 'Unknownn';
     }
@@ -244,9 +257,11 @@ export class ChartComponent implements AfterViewInit {
   tradingActivitySegment() {
     try {
       const recentCount = this.totalc;
+
       if (recentCount >= 70) return 'Active Trader';
       if (recentCount >= 75 && recentCount <= 90) return 'Consistent Investor';
       return 'Passive Investor';
+
     } catch {
       return 'Unknown';
     }
