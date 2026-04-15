@@ -20,14 +20,8 @@ export class Login {
   constructor(private auth: AuthService, private router: Router) {}
 
   login() {
-    const success = this.auth.login(this.email, this.password,this.Role).subscribe(res => {
-  if (res) {
-    this.router.navigate(['/dashboard']);
-  } else {
-    this.error = 'Invalid credentials';
-  }
-
-});    if (success) {
+    const success = this.auth.login(this.email, this.password, this.Role);
+    if (success) {
       this.router.navigate(['/dashbord']); 
     } else {
       this.error = 'Invalid credentials';

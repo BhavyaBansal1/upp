@@ -63,7 +63,6 @@ export class Dashbord implements AfterViewInit {
       if (this.stockChart) {
         this.stockChart.destroy();
       }
-
       const stocks = this.getstocks();
       this.stockChart = new Chart("stockChart", {
         type: 'bar',

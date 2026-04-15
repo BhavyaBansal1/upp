@@ -20,4 +20,9 @@ describe('Navbar', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('should get user for detail',()=>{
+    if(component.auth.getUser().length === 0){
+      throw new Error("user details are not able to fetched");
+    }
+  });
 });

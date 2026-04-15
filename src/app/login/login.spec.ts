@@ -9,12 +9,24 @@ describe('Login Component', () => {
 
   let authServiceSpy: any;
   let routerSpy: any;
+  let callCount = 0;
 
   beforeEach(async () => {
 
     authServiceSpy = {
-      login: () => true
-    };
+      login(email: string, password: string,role:any): boolean {
+callCount++;
+      const toke = {
+        role:role,
+        name:email.split("@")[0].trim(),
+        email:email
+      };
+      const token = btoa(JSON.stringify(toke));
+      localStorage.setItem('token', token);
+
+      return true;
+    }
+  }
 
     routerSpy = {
       navigate: () => {}
@@ -30,4 +42,15 @@ describe('Login Component', () => {
 
     fixture = TestBed.createComponent(Login);
     component = fixture.componentInstance;
-  });})
+  });
+it('should create component', () => {
+    if (!component) {
+      throw new Error('Component not created');
+    }
+  });
+  it('should allow login if credential enter re correct',()=>{
+      if()
+  });
+
+
+});

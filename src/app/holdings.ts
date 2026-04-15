@@ -53,7 +53,7 @@ updatePrices() {
     let change = (Math.random() * 10 - 5);
     stock.price = Math.round(stock.price + change);
     // stock.currenttime = Date.now();
-    this.list=[...this.list];
+    this.list=this.list;
   }
 }
 
