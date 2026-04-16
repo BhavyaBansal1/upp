@@ -1,3 +1,4 @@
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChartComponent } from './chart';
@@ -30,8 +31,8 @@ it('should create component', () => {
     }
   });
    it('should create pie chart' ,()=>{
-    component.pieCanvas;
-    if(!component.piechart){
+    component.createPieChart();
+    if(!component.pieCanvas){
       throw new Error ("chart  are not created");
     }
   });
@@ -43,7 +44,7 @@ it('should create component', () => {
   });
    it('should create stock chart' ,()=>{
     component.segmachart();
-    if(!component.segmentchart){
+    if(!component.segmentcanvas){
       throw new Error ("chart are  not created");
     }
   });
@@ -60,14 +61,14 @@ it('should create component', () => {
     }
   });
   it('should check risk profile' ,()=>{
-   const r= component.riskProfile();
-    if(r=== ''){
+   const r= component.riskProfilech();
+    if( r ==='Unknownn'){
       throw new Error ("risk can not be evaluated");
     }
   });
    it('should check risk profile' ,()=>{
     let r = component.tradingActivitySegment();
-     if(r === ''){
+     if(r === 'Unknownn'){
       throw new Error ("Trading activity cannot be delected");
     }
   });

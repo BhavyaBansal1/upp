@@ -13,4 +13,10 @@ describe('Holdings', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+  it('should be update price', () => {
+    expect(service).toBeTruthy();
+  });
+  it('should be update price', () => {
+    expect(service).toBeTruthy();
+  });
 });

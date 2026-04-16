@@ -13,8 +13,7 @@ import { CommonModule } from '@angular/common';
 export class Navbar {
 constructor(public auth:AuthService){}
 
-// name: string = this.auth.getUser()?.name;
- get user() {
+ getuser() {
     return this.auth.getUser();
   }
 }

@@ -58,6 +58,9 @@ describe('Dashbord Component (Advanced No Jasmine spies)', () => {
 });
 it ('should update portfolio value', ()=>{
   const ret=component.updatePortfolioValue();
+  if(ret === null){
+     throw new Error ("update is not working");
+  }
   } );
 
   it('should create stock chart' ,()=>{

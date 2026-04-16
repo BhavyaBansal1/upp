@@ -1,7 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-
 import { BalanceService } from './balance-service';
-import { Component } from '@angular/core';
 
 describe('BalanceService', () => {
   let service: BalanceService;
@@ -11,27 +9,20 @@ describe('BalanceService', () => {
     service = TestBed.inject(BalanceService);
   });
 
-  it('should be created', () => {
+  it('should create service', () => {
     expect(service).toBeTruthy();
   });
-  it('should be able to give balance', () => {
-    const amou=service.getBalance();
-    if(amou === null){
-      throw new Error("amount is not geting displayed");
-    }
+
+  it('should deduct balance on buy', () => {
+    service.balanceamount = 1000;
+    service.buys(100);
+    expect(service.balanceamount).toBe(900);
   });
-  
-  it('should be able to buy', () => {
-    const amou=service.buys;
-    if(amou === null){
-      throw new Error("amount is not geting displayed");
-    }
+
+  it('should increase balance on sell', () => {
+    service.balanceamount = 1000;
+    service.sell(200);
+    expect(service.balanceamount).toBe(1200);
   });
-  
-  it('should be able to sell', () => {
-    const amou=service.sell(10000);
-    if(amou === null){
-      throw new Error("amount is not geting displayed");
-    }
-  });
+
 });

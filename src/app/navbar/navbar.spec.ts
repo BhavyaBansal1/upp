@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { Navbar } from './navbar';
+import { AuthService } from '../auth-servie';
+class MockAuthService {
+  getUser() {
+    return { name: 'Test User' };
+  }
+}
 
 describe('Navbar', () => {
   let component: Navbar;
@@ -8,9 +13,11 @@ describe('Navbar', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Navbar]
-    })
-    .compileComponents();
+      imports: [Navbar],
+      providers: [
+        { provide: AuthService, useClass: MockAuthService }
+      ]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Navbar);
     component = fixture.componentInstance;
@@ -20,9 +27,11 @@ describe('Navbar', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should get user for detail',()=>{
-    if(component.auth.getUser().length === 0){
-      throw new Error("user details are not able to fetched");
-    }
+
+  it('should get user details', () => {
+    const user = component.getuser();
+
+    expect(user).toBeTruthy();
+    expect(user.name).toBe('Test User');
   });
 });
