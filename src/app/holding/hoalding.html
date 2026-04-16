@@ -1,0 +1,111 @@
+<!-- <div class="container mt-4">
+  <div class="row justify-content-start">
+    <div class="col-md-4">
+      <div class="card portfolio-card text-center shadow p-3">
+        <h5>Total Portfolio Value</h5>
+        <h3>${{ portfolioValue }}</h3>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="container mt-4">
+
+  <div class="container mt-4">
+    <button class="btn btn-success me-2" (click)="pagerelod()">Refresh</button>
+    <button class="btn btn-primary me-2" (click)="togle_load()">{{autore ?'StopRefresh':'AutoRefresh'}}</button>
+    <!-- Center the content -->
+    <div class="row justify-content-center">
+
+
+      <div class="col-md-12">
+        <div class="card mb-3">
+          <div class="card-header bg-primary text-white">
+            Stocks
+          </div>
+
+          <table class="table table-sm mb-6">
+
+            <thead class="table-dark">
+              <tr>
+                <th class="text-start">Holdings</th>
+                <th class="text-center">Quantity</th>
+                <th class="text-end">Avgpriceprice</th>
+                <th class="text-end">price</th>
+                <th class="text-end">Profit/loss</th>
+                <th class="text-end">Marketvalue</th>
+                <th class="text-end">Time</th>
+
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let item of getstocks()">
+                <td class="text-start">{{item.stockName}}</td>
+                <td class="text-center">{{item.quantity}}</td>
+                <td class="text-center">{{item.avgPrice}}</td>
+                <td class="text-center">{{item.price}}</td>
+                <td class="text-center" [ngClass]="{'text-danger':(item.price-item.avgPrice) < 0 ,
+              'text-success':(item.price-item.avgPrice) > 0 }">
+                  {{item.price-item.avgPrice}}
+                </td>
+                <td class="text-center">{{item.price*item.quantity}}</td>
+                <td class="text-end">
+                  {{item.currenttime | date:'yyyy-MM-dd HH:mm:ss'}}
+                </td>
+              </tr>
+
+              <!-- Empty -->
+              <tr *ngIf="getstocks().length === 0">
+                <td colspan="3" class="text-center text-muted">
+                  No stock holdings
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
+
+        <!-- MUTUAL FUNDS -->
+        <!-- <div class="card">
+        <div class="card-header bg-success text-white">
+          Mutual Funds
+        </div> -->
+
+        <!-- <table class="table table-sm mb-0">
+
+          <thead class="table-dark">
+            <tr>
+              <th class="text-start">Holdings</th>
+              <th class="text-center">Quantity</th>
+              <th class="text-center">Price</th>
+              <th class="text-end">Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mf of getmutualfund()">
+              <td class="text-start">{{mf.stockName}}</td>
+              <td class="text-center">{{mf.quantity}}</td>
+              <td class="text-center">{{mf.price}}</td>
+              <td class="text-end">
+                {{mf.currenttime | date:'yyyy-MM-dd HH:mm:ss'}}
+              </td>
+            </tr>
+
+            <!-- Empty -->
+        <!-- <tr *ngIf="getmutualfund().length === 0">
+              <td colspan="3" class="text-center text-muted">
+                No mutual fund holdings
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+
+    </div>
+  </div> -->
+
+        <!-- </div> -->
+
+        <router-outlet></router-outlet>

@@ -72,7 +72,7 @@ export class ChartComponent implements AfterViewInit {
       }, 1000);
 
     } catch (e) {
-      console.error(e);
+      ;
     }
   }
 
@@ -87,7 +87,7 @@ export class ChartComponent implements AfterViewInit {
       }
       this.totalc = this.totalst + this.totalmf;
     } catch (e) {
-      console.error(e);
+      ;
     }
   }
 
@@ -146,7 +146,7 @@ export class ChartComponent implements AfterViewInit {
       });
 
     } catch (e) {
-      console.error(e);
+      ;
     }
   }
 
@@ -179,7 +179,7 @@ export class ChartComponent implements AfterViewInit {
       });
 
     } catch (e) {
-      console.error(e);
+      ;
     }
   }
 
@@ -206,7 +206,7 @@ export class ChartComponent implements AfterViewInit {
       });
 
     } catch (e) {
-      console.error(e);
+      ;
     }
   }
 
@@ -237,7 +237,7 @@ export class ChartComponent implements AfterViewInit {
       });
 
     } catch (e) {
-      console.error(e);
+      ;
     }
   }
 

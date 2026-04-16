@@ -1,11 +1,12 @@
 import { Component, AfterViewInit } from '@angular/core';
-import { Hoalding } from '../hoalding/hoalding';
-import { Sumary } from '../sumary/sumary';
+import { Hoalding } from '../holding/hoalding';
+import { Sumary } from '../summary/sumary';
 import Chart from 'chart.js/auto';
 import { Holdings } from '../holdings';
 import { ChartComponent } from '../chart/chart';
 import { BalanceService } from '../balance-service';
-
+import 'zone.js';
+import 'zone.js/testing'
 @Component({
   selector: 'app-dashbord',
   standalone: true,
@@ -20,7 +21,7 @@ export class Dashbord implements AfterViewInit {
   stockChart!: Chart;
 
   constructor(
-    public holdingservice: Holdings,public balanceService: BalanceService ) {}
+    public holdingservice: Holdings, public balanceService: BalanceService) { }
 
   ngOnInit() {
     this.updatePortfolioValue();
@@ -42,10 +43,9 @@ export class Dashbord implements AfterViewInit {
 
       this.portfolioValue = total;
     } catch (e) {
-      console.error(e);
+      ;
     }
   }
-
   getstocks() {
     return this.holdingservice.getAllholdings();
   }
@@ -79,26 +79,26 @@ export class Dashbord implements AfterViewInit {
       });
 
     } catch (e) {
-      console.error(e);
+      ;
     }
   }
 
 
 
 }
-  // createMFChart() {
-  //   const mf = this.getmutualfund();
+// createMFChart() {
+//   const mf = this.getmutualfund();
 
-  //   new Chart("mfChart", {
-  //     type: 'pie',
-  //     data: {
-  //       labels: mf.map(m => m.stockName),
-  //       datasets: [{
-  //         data: mf.map(m => m.quantity)
-  //       }]
-  //     },
-  //     options: {
-  //       responsive: true
-  //     }
-  //   });
-  // }
+//   new Chart("mfChart", {
+//     type: 'pie',
+//     data: {
+//       labels: mf.map(m => m.stockName),
+//       datasets: [{
+//         data: mf.map(m => m.quantity)
+//       }]
+//     },
+//     options: {
+//       responsive: true
+//     }
+//   });
+// }

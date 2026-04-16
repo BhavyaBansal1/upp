@@ -25,37 +25,34 @@ export class Trade implements OnInit {
   constructor(
     public balanceService: BalanceService,
     public holdingservice: Holdings
-  ) {}
+  ) { }
 
   ngOnInit() {
     try {
       const data = localStorage.getItem('transactions');
       this.Transactions = data ? JSON.parse(data) : [];
     } catch (e) {
-      console.error('LocalStorage error:', e);
       this.Transactions = [];
     }
-      try {
-        let change = (Math.random() * 10 - 5);
-        this.price = Math.max(1, Math.round(this.price + change));
-      } catch (e) {
-        console.error('Price update error:', e);
-      }
+    try {
+      let change = (Math.random() * 10 - 5);
+      this.price = Math.max(1, Math.round(this.price + change));
+    } catch (e) {
+    }
   }
 
   calculateOrderValue() {
     try {
       this.Ordervalue = this.price * this.quantity;
     } catch (e) {
-      console.error(e);
+      (e);
     }
   }
   saveRecentTransactions() {
     try {
-      this.Transactions = this.Transactions.slice(0,5);
+      this.Transactions = this.Transactions.slice(0, 5);
       localStorage.setItem('transactions', JSON.stringify(this.Transactions));
     } catch (e) {
-      console.error('Save transaction error:', e);
     }
   }
   buy() {
@@ -85,10 +82,10 @@ export class Trade implements OnInit {
         type: 'Buy'
       });
       this.saveRecentTransactions();
-      this.msg = "Stocks bought checkfully";
+      this.msg = "Stocks bought successfully";
 
     } catch (error) {
-      console.error(error);
+      (error);
       this.msg = "Error while buying";
     }
   }
@@ -114,10 +111,10 @@ export class Trade implements OnInit {
       });
 
       this.saveRecentTransactions();
-      this.msg = "Stocks sold checkfully";
+      this.msg = "Stocks sold sucessfully";
 
     } catch (error) {
-      console.error(error);
+      (error);
       this.msg = "Error while selling";
     }
   }

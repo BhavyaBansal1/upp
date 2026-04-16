@@ -4,14 +4,14 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class BalanceService {
-  balanceamount:number=10000;
+  balanceamount: number = 10000;
 
-  getBalance(){
+  getBalance() {
     return this.balanceamount;
-  }buys(amount:number){
-    this.balanceamount=this.balanceamount-amount
+  } buys(amount: number) {
+    this.balanceamount = this.balanceamount - amount
   }
-  sell(amount:number){
-    this.balanceamount=this.balanceamount+amount
+  sell(amount: number) {
+    this.balanceamount = this.balanceamount + amount
   }
 }

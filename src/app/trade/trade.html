@@ -20,29 +20,21 @@
       </select>
     </div>
 
- <div class="mb-3">
-  <label class="form-label">Quantity</label>
-  <input 
-    type="number"
-    class="form-control"
-    [(ngModel)]="quantity"
-    #qty="ngModel"
-    min="1"
-    step="1"
-    pattern="^[0-9]+$"
-    required
-  >
-  <div *ngIf="qty.invalid && qty.touched" class="text-danger">
-    <small *ngIf="qty.errors?.['pattern']">
-      Only whole numbers allowed
-    </small>
-    <small *ngIf="qty.errors?.['min']">
-      Minimum quantity should be greater than zero
-    </small>
-  </div>
- 
-</div>
- 
+    <div class="mb-3">
+      <label class="form-label">Quantity</label>
+      <input type="number" class="form-control" [(ngModel)]="quantity" #qty="ngModel" min="1" step="1"
+        pattern="^[0-9]+$" required>
+      <div *ngIf="qty.invalid && qty.touched" class="text-danger">
+        <small *ngIf="qty.errors?.['pattern']">
+          Only whole numbers allowed
+        </small>
+        <small *ngIf="qty.errors?.['min']">
+          Minimum quantity should be greater than zero
+        </small>
+      </div>
+
+    </div>
+
     <!-- Price -->
     <p class="fw-bold">Price per share: ${{price}}</p>
 
@@ -58,12 +50,12 @@
       <button [disabled]="qty.invalid" class="btn btn-danger" (click)="sell()">Sell</button>
     </div>
 
-    
+
     <div *ngIf="msg" class="alert alert-warning">
       {{msg}}
     </div>
 
-  
+
     <p class="text-muted">
       Available shares of {{stockName}}:
       {{ holdingservice.getQuantity(stockName) }}

@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { Dashbord } from './dashbord/dashbord';
-import { Sumary } from './sumary/sumary';
+import { Sumary } from './summary/sumary';
 import { Trade } from './trade/trade';
 import { Holdings } from './holdings';
-import { Hoalding } from './hoalding/hoalding';
+import { Hoalding } from './holding/hoalding';
 import { SignupComponent } from './signup-component/signup-component';
 import { AuthGuard } from './auth-guard';
 import { Login } from './login/login';
@@ -14,36 +14,36 @@ export const routes: Routes = [
   {
     path: '',
     component: Login,
-    data:{hideNavbar:true}
+    data: { hideNavbar: true }
   },
   {
-   path: 'signup', 
-   component: SignupComponent
+    path: 'signup',
+    component: SignupComponent
   },
   {
     path: 'dashbord',
     component: Dashbord,
-    canActivate:[AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'trade',
     component: Trade,
-    canActivate:[AuthGuard , controlauthGuard]
+    canActivate: [AuthGuard, controlauthGuard]
 
   },
   {
     path: 'sumary',
     component: Sumary,
-    canActivate:[AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'hold',
     component: Hoalding,
-    canActivate:[AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: '**',
     redirectTo: '',
-    canActivate:[AuthGuard]
+    canActivate: [AuthGuard]
   }
 ];

@@ -12,14 +12,14 @@ export class Holdings {
       currenttime: Date.now(),
       type: 'stock',
       price: 100,
-     avgPrice: 150
-    },{
-    stockName: 'Microfund',
+      avgPrice: 150
+    }, {
+      stockName: 'Microfund',
       quantity: 26,
       currenttime: Date.now(),
       type: 'Fund',
       price: 169,
-     avgPrice: 150
+      avgPrice: 150
     },
     {
       stockName: 'tata',
@@ -47,15 +47,15 @@ export class Holdings {
     }
   ];
 
-  
-updatePrices() {
-  for (let stock of this.list) {
-    let change = (Math.random() * 10 - 5);
-    stock.price = Math.round(stock.price + change);
-    // stock.currenttime = Date.now();
-    this.list=this.list;
+
+  updatePrices() {
+    for (let stock of this.list) {
+      let change = (Math.random() * 10 - 5);
+      stock.price = Math.round(stock.price + change);
+      // stock.currenttime = Date.now();
+      this.list = this.list;
+    }
   }
-}
 
   buy(stockName: string, quantity: number, currenttime: any, type: string, price: number) {
 
