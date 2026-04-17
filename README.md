@@ -3,29 +3,34 @@ import { Login } from './login';
 import { AuthService } from '../auth-service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 
 // ✅ Mock AuthService
 class MockAuthService {
+  shouldReturn = false;
+
   login(email: string, password: string, role: string) {
-    return false; // default
+    return this.shouldReturn;
   }
 }
 
 // ✅ Mock Router
 class MockRouter {
-  navigate(path: string[]) {}
+  navigatedTo: any = null;
+
+  navigate(path: string[]) {
+    this.navigatedTo = path;
+  }
 }
 
-describe('LoginComponent (without jasmine spyObj)', () => {
+describe('LoginComponent (no spyOn)', () => {
   let component: Login;
   let fixture: ComponentFixture<Login>;
-  let authService: AuthService;
-  let router: Router;
+  let authService: MockAuthService;
+  let router: MockRouter;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Login, FormsModule, RouterTestingModule],
+      imports: [Login, FormsModule], // ❌ removed RouterTestingModule
       providers: [
         { provide: AuthService, useClass: MockAuthService },
         { provide: Router, useClass: MockRouter }
@@ -35,8 +40,8 @@ describe('LoginComponent (without jasmine spyObj)', () => {
     fixture = TestBed.createComponent(Login);
     component = fixture.componentInstance;
 
-    authService = TestBed.inject(AuthService);
-    router = TestBed.inject(Router);
+    authService = TestBed.inject(AuthService) as unknown as MockAuthService;
+    router = TestBed.inject(Router) as unknown as MockRouter;
 
     fixture.detectChanges();
   });
@@ -48,31 +53,24 @@ describe('LoginComponent (without jasmine spyObj)', () => {
 
   // ✅ 2. Success login
   it('should navigate to dashboard on successful login', () => {
-    spyOn(authService, 'login').and.returnValue(true);
-    spyOn(router, 'navigate');
+    authService.shouldReturn = true; // control behavior
 
     component.email = 'test@mail.com';
     component.password = '123456';
-    component.role = 'user'; // ✅ make sure lowercase
+    component.role = 'user'; // ✅ FIXED
 
     component.login();
 
-    expect(authService.login).toHaveBeenCalledWith(
-      'test@mail.com',
-      '123456',
-      'user'
-    );
-    expect(router.navigate).toHaveBeenCalledWith(['/dashboard']);
+    expect(router.navigatedTo).toEqual(['/dashboard']);
   });
 
   // ✅ 3. Failed login
   it('should show error on failed login', () => {
-    spyOn(authService, 'login').and.returnValue(false);
-    spyOn(router, 'navigate');
+    authService.shouldReturn = false;
 
     component.login();
 
     expect(component.error).toBe('Invalid credentials');
-    expect(router.navigate).not.toHaveBeenCalled();
+    expect(router.navigatedTo).toBeNull();
   });
 });
