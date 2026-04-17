@@ -1,61 +1,81 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Login} from './login';
+import { Login } from './login';
 import { AuthService } from '../auth-service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 
-describe('LoginComponent', () => {
-    let component: Login;
-    let fixture: ComponentFixture<Login>;
-    let authServiceSpy: jasmine.SpyObj<AuthService>;
-    let routerSpy: jasmine.SpyObj<Router>;
+// ✅ Mock AuthService
+class MockAuthService {
+  login(email: string, password: string, role: string) {
+    // default return (can override in test)
+    return false;
+  }
+}
 
-    beforeEach(async () => {
-        // Create spies
-        authServiceSpy = jasmine.createSpyObj('AuthService', ['login']);
-        routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+// ✅ Mock Router
+class MockRouter {
+  navigate(path: string[]) {}
+}
 
-        await TestBed.configureTestingModule({
-            imports: [Login, FormsModule, RouterTestingModule],
-            providers: [
-                { provide: AuthService, useValue: authServiceSpy },
-                { provide: Router, useValue: routerSpy }
-            ]
-        }).compileComponents();
+describe('LoginComponent (without jasmine)', () => {
+  let component: Login;
+  let fixture: ComponentFixture<Login>;
+  let authService: MockAuthService;
+  let router: MockRouter;
 
-        fixture = TestBed.createComponent(Login);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Login, FormsModule, RouterTestingModule],
+      providers: [
+        { provide: AuthService, useClass: MockAuthService },
+        { provide: Router, useClass: MockRouter }
+      ]
+    }).compileComponents();
 
-    it('should create the login component', () => {
-        expect(component).toBeTruthy();
-    });
+    fixture = TestBed.createComponent(Login);
+    component = fixture.componentInstance;
 
-    it('should navigate to dashboard on successful login', () => {
-        authServiceSpy.login.and.returnValue(true);
+    // get instances
+    authService = TestBed.inject(AuthService) as unknown as MockAuthService;
+    router = TestBed.inject(Router) as unknown as MockRouter;
 
-        component.email = 'test@mail.com';
-        component.password = '123456';
-        component.Role = 'user';
+    fixture.detectChanges();
+  });
 
-        component.login();
+  // ✅ 1. Create
+  it('should create the login component', () => {
+    expect(component).toBeTruthy();
+  });
 
-        expect(authServiceSpy.login).toHaveBeenCalledWith(
-            'test@mail.com',
-            '123456',
-            'user'
-        );
-        expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
-    });
+  // ✅ 2. Success login
+  it('should navigate to dashboard on successful login', () => {
+    // override method
+    spyOn(authService, 'login').and.returnValue(true);
+    spyOn(router, 'navigate');
 
-    it('should show error on failed login', () => {
-        authServiceSpy.login.and.returnValue(false);
+    component.email = 'test@mail.com';
+    component.password = '123456';
+    component.Role = 'user';
 
-        component.login();
+    component.login();
 
-        expect(component.error).toBe('Invalid credentials');
-        expect(routerSpy.navigate).not.toHaveBeenCalled();
-    });
+    expect(authService.login).toHaveBeenCalledWith(
+      'test@mail.com',
+      '123456',
+      'user'
+    );
+    expect(router.navigate).toHaveBeenCalledWith(['/dashboard']);
+  });
+
+  // ✅ 3. Failed login
+  it('should show error on failed login', () => {
+    spyOn(authService, 'login').and.returnValue(false);
+    spyOn(router, 'navigate');
+
+    component.login();
+
+    expect(component.error).toBe('Invalid credentials');
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
 });
