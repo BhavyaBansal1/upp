@@ -1,52 +1,55 @@
-import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { AuthGuard } from './auth-guard';
-import { AuthService } from './auth-service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Navbar } from './navbar';
+import { AuthService } from '../auth-service';
+import { RouterTestingModule } from '@angular/router/testing';
 
-describe('AuthGuard', () => {
+class MockAuthService {
+  getUser() {
+    return { name: 'Test User' };
+  }
 
-  let guard: AuthGuard;
+  isLoggedIn() {
+    return true;
+  }
 
-  let routerMock = {
-    navigatedTo: '',
-    navigate: (commands: any[]) => {
-      routerMock.navigatedTo = commands.join('/');
-    }
-  };
+  getrole() {
+    return 'user';
+  }
+}
 
-  let authMock = {
-    isLoggedIn: () => true
-  };
+describe('Navbar', () => {
+  let component: Navbar;
+  let fixture: ComponentFixture<Navbar>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Navbar, RouterTestingModule],
       providers: [
-        AuthGuard,
-        { provide: AuthService, useValue: authMock },
-        { provide: Router, useValue: routerMock }
+        { provide: AuthService, useClass: MockAuthService }
       ]
-    });
+    }).compileComponents();
 
-    guard = TestBed.inject(AuthGuard);
+    fixture = TestBed.createComponent(Navbar);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  // ✅ 1. should allow access when logged in
-  it('should return true if user is logged in', () => {
-    authMock.isLoggedIn = () => true;
-
-    const result = guard.canActivate();
-
-    expect(result).toBe(true);
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
-  // ✅ 2. should block access when not logged in
-  it('should return false and navigate to login when not logged in', () => {
-    authMock.isLoggedIn = () => false;
-
-    const result = guard.canActivate();
-
-    expect(result).toBe(false);
-    expect(routerMock.navigatedTo).toBe('/');
+  it('should load user on init', () => {
+    expect(component.user).toBeTruthy();
+    expect(component.user.name).toBe('Test User');
   });
 
+  it('should return user from getuser()', () => {
+    const user = component.getuser();
+    expect(user.name).toBe('Test User');
+  });
+
+  it('should show user in template', () => {
+    const element: HTMLElement = fixture.nativeElement;
+    expect(element.textContent).toContain('Test User');
+  });
 });
