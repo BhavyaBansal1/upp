@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Login } from './login';
 import { AuthService } from '../auth-service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 // ✅ Mock AuthService
@@ -22,7 +22,7 @@ class MockRouter {
   }
 }
 
-describe('LoginComponent (no spyOn)', () => {
+describe('LoginComponent (no jasmine, no spyOn)', () => {
   let component: Login;
   let fixture: ComponentFixture<Login>;
   let authService: MockAuthService;
@@ -30,10 +30,18 @@ describe('LoginComponent (no spyOn)', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Login, FormsModule], // ❌ removed RouterTestingModule
+      imports: [Login, FormsModule],
       providers: [
         { provide: AuthService, useClass: MockAuthService },
-        { provide: Router, useClass: MockRouter }
+        { provide: Router, useClass: MockRouter },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: { params: {}, queryParams: {} },
+            params: {},
+            queryParams: {}
+          }
+        }
       ]
     }).compileComponents();
 
@@ -53,11 +61,11 @@ describe('LoginComponent (no spyOn)', () => {
 
   // ✅ 2. Success login
   it('should navigate to dashboard on successful login', () => {
-    authService.shouldReturn = true; // control behavior
+    authService.shouldReturn = true;
 
     component.email = 'test@mail.com';
     component.password = '123456';
-    component.role = 'user'; // ✅ FIXED
+    component.role = 'user'; // ✅ important
 
     component.login();
 
