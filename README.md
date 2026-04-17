@@ -8,8 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 // ✅ Mock AuthService
 class MockAuthService {
   login(email: string, password: string, role: string) {
-    // default return (can override in test)
-    return false;
+    return false; // default
   }
 }
 
@@ -18,11 +17,11 @@ class MockRouter {
   navigate(path: string[]) {}
 }
 
-describe('LoginComponent (without jasmine)', () => {
+describe('LoginComponent (without jasmine spyObj)', () => {
   let component: Login;
   let fixture: ComponentFixture<Login>;
-  let authService: MockAuthService;
-  let router: MockRouter;
+  let authService: AuthService;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -36,9 +35,8 @@ describe('LoginComponent (without jasmine)', () => {
     fixture = TestBed.createComponent(Login);
     component = fixture.componentInstance;
 
-    // get instances
-    authService = TestBed.inject(AuthService) as unknown as MockAuthService;
-    router = TestBed.inject(Router) as unknown as MockRouter;
+    authService = TestBed.inject(AuthService);
+    router = TestBed.inject(Router);
 
     fixture.detectChanges();
   });
@@ -50,13 +48,12 @@ describe('LoginComponent (without jasmine)', () => {
 
   // ✅ 2. Success login
   it('should navigate to dashboard on successful login', () => {
-    // override method
     spyOn(authService, 'login').and.returnValue(true);
     spyOn(router, 'navigate');
 
     component.email = 'test@mail.com';
     component.password = '123456';
-    component.Role = 'user';
+    component.role = 'user'; // ✅ make sure lowercase
 
     component.login();
 
