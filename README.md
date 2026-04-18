@@ -1,70 +1,111 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Login } from './login';
-import { AuthService } from '../auth-service';
-import { FormsModule } from '@angular/forms';
+import { TestBed } from '@angular/core/testing';
+import { AuthService } from './auth-service';
 import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 
-// ✅ Mock AuthService
-class MockAuthService {
-  shouldReturn = false;
+// ✅ Mock Router
+class MockRouter {
+  navigatedTo: any = null;
 
-  login(email: string, password: string, role: string) {
-    return this.shouldReturn;
+  navigate(path: string[]) {
+    this.navigatedTo = path;
   }
 }
 
-describe('LoginComponent (stable)', () => {
-  let component: Login;
-  let fixture: ComponentFixture<Login>;
-  let authService: MockAuthService;
-  let router: Router;
+describe('AuthService', () => {
+  let service: AuthService;
+  let router: MockRouter;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        Login,
-        FormsModule,
-        RouterTestingModule   // ✅ THIS solves all routing errors
-      ],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       providers: [
-        { provide: AuthService, useClass: MockAuthService }
+        AuthService,
+        { provide: Router, useClass: MockRouter }
       ]
-    }).compileComponents();
+    });
 
-    fixture = TestBed.createComponent(Login);
-    component = fixture.componentInstance;
+    service = TestBed.inject(AuthService);
+    router = TestBed.inject(Router) as unknown as MockRouter;
 
-    authService = TestBed.inject(AuthService) as unknown as MockAuthService;
-    router = TestBed.inject(Router);
-
-    fixture.detectChanges();
+    // ✅ clear storage before each test
+    localStorage.clear();
+    service.users = [];
   });
 
-  // ✅ 1. Create
-  it('should create the login component', () => {
-    expect(component).toBeTruthy();
+  // ✅ 1. Service creation
+  it('should create service', () => {
+    expect(service).toBeTruthy();
   });
 
-  // ✅ 2. Success login
-  it('should navigate to dashboard on successful login', () => {
-    authService.shouldReturn = true;
+  // ✅ 2. Signup success
+  it('should signup a new user', () => {
+    const result = service.signup('test@mail.com', '123', 'user');
 
-    component.email = 'test@mail.com';
-    component.password = '123456';
-    component.role = 'user';
-
-    component.login();
-
-    expect(router.url).toContain('dashboard'); // ✅ stable check
+    expect(result).toBeTrue();
+    expect(service.users.length).toBe(1);
   });
 
-  // ✅ 3. Failed login
-  it('should show error on failed login', () => {
-    authService.shouldReturn = false;
+  // ✅ 3. Signup duplicate
+  it('should not allow duplicate signup', () => {
+    service.signup('test@mail.com', '123', 'user');
+    const result = service.signup('test@mail.com', '123', 'user');
 
-    component.login();
+    expect(result).toBeFalse();
+  });
 
-    expect(component.error).toBe('Invalid credentials');
+  // ✅ 4. Login success
+  it('should login with correct credentials', () => {
+    service.signup('test@mail.com', '123', 'user');
+
+    const result = service.login('test@mail.com', '123', 'user');
+
+    expect(result).toBeTrue();
+    expect(localStorage.getItem('token')).toBeTruthy();
+  });
+
+  // ✅ 5. Login fail
+  it('should fail login with wrong credentials', () => {
+    const result = service.login('wrong@mail.com', '123', 'user');
+
+    expect(result).toBeFalse();
+  });
+
+  // ✅ 6. getUser
+  it('should return user from token', () => {
+    service.signup('test@mail.com', '123', 'user');
+    service.login('test@mail.com', '123', 'user');
+
+    const user = service.getUser();
+
+    expect(user.email).toBe('test@mail.com');
+    expect(user.role).toBe('user');
+  });
+
+  // ✅ 7. isLoggedIn
+  it('should return true if token exists', () => {
+    service.signup('test@mail.com', '123', 'user');
+    service.login('test@mail.com', '123', 'user');
+
+    expect(service.isLoggedIn()).toBeTrue();
+  });
+
+  // ✅ 8. logout
+  it('should logout and clear token', () => {
+    service.signup('test@mail.com', '123', 'user');
+    service.login('test@mail.com', '123', 'user');
+
+    service.logout();
+
+    expect(localStorage.getItem('token')).toBeNull();
+    expect(router.navigatedTo).toEqual(['/']);
+  });
+
+  // ✅ 9. getrole
+  it('should return role from token', () => {
+    service.signup('test@mail.com', '123', 'admin');
+    service.login('test@mail.com', '123', 'admin');
+
+    const role = service.getrole();
+
+    expect(role).toBe('admin');
   });
 });
