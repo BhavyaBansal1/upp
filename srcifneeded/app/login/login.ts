@@ -1,0 +1,33 @@
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../auth-service';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { SignupComponent } from '../signup-component/signup-component';
+import { Authcomponet } from '../auth/auth';
+
+@Component({
+  selector: 'app-login',
+  imports: [FormsModule, RouterOutlet, CommonModule, RouterLink, SignupComponent,Authcomponet],
+  templateUrl: './login.html',
+  styleUrl: './login.css',
+})
+export class Login {
+
+  email = '';
+  password = '';
+  error = '';
+  Role = '';
+
+  constructor(private auth: AuthService, private router: Router) { }
+
+  login(data: any) {
+  const success = this.auth.login(data.email, data.password, data.role);
+
+  if (success) {
+    this.router.navigate(['/dashboard']);
+  } else {
+    this.error = 'Invalid credentials';
+  }
+}
+}

@@ -1,0 +1,28 @@
+<div class="login-card">
+
+  <h2 class="title">{{ title }}</h2>
+  <p class="subtitle">{{ subtitle }}</p>
+
+  <div class="input-group">
+    <input type="email" [(ngModel)]="email" required />
+    <label>Email</label>
+  </div>
+
+  <div class="input-group">
+    <input type="password" [(ngModel)]="password" required />
+    <label>Password</label>
+  </div>
+
+  <div class="input-group">
+    <select [(ngModel)]="role">
+      <option value="" disabled>Select Role</option>
+      <option value="Trader">Trader</option>
+      <option value="NonTrader">NonTrader</option>
+    </select>
+  </div>
+
+  <button class="login-btn" (click)="submit()">
+    {{ buttonText }}
+  </button>
+
+</div>

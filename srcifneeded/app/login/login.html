@@ -1,0 +1,16 @@
+<div class="login-wrapper">
+
+  <app-auth
+    title="Welcome Back 👋"
+    subtitle="Login to continue trading"
+    buttonText="Login"
+    (formSubmit)="login($event)">
+  </app-auth>
+
+  <p *ngIf="error" class="error-msg">{{ error }}</p>
+
+    Don’t have an account?
+    <a routerLink="/signup">Create one</a>
+
+
+</div>

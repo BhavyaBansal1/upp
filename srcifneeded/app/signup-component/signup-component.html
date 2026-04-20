@@ -1,0 +1,18 @@
+<div class="login-wrapper">
+
+  <app-auth
+      title="Create Account 👋"
+    subtitle="Sign up to start your journey"
+    buttonText="Signup"
+    (formSubmit)="signup($event)">
+  </app-auth>
+
+  <p *ngIf="error" class="error-msg">{{ error }}</p>
+  <p *ngIf="success" class="success-msg">{{ success }}</p>
+
+  <p class="signup-text">
+    Already have an account?
+    <a routerLink="/">Login</a>
+  </p>
+
+</div>
