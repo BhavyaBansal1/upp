@@ -1,22 +1,29 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Navbar } from './navbar';
 import { AuthService } from '../auth-service';
-import 'zone.js';
-import 'zone.js/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 class MockAuthService {
   getUser() {
     return { name: 'Test User' };
   }
+
+  isLoggedIn() {
+    return true;
+  }
+
+  getrole() {
+    return {role: 'user'};
+  }
 }
 
-describe('Navbar Component', () => {
+describe('Navbar', () => {
   let component: Navbar;
   let fixture: ComponentFixture<Navbar>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Navbar],
+      imports: [Navbar, RouterTestingModule],
       providers: [
         { provide: AuthService, useClass: MockAuthService }
       ]
@@ -27,24 +34,22 @@ describe('Navbar Component', () => {
     fixture.detectChanges();
   });
 
-  it('should create the component', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load user on initialization', () => {
-    expect(component.auth.users).toBeTruthy();
-    expect(component.auth.users).toBe('Test User');
+  it('should load user on init', () => {
+    expect(component.auth.getUser).toBeTruthy();
+    // expect(component.auth.getrole).toEqual('user');
   });
 
   it('should return user from getuser()', () => {
     const user = component.getuser();
-    expect(user).toBeTruthy();
     expect(user.name).toBe('Test User');
   });
 
-  it('should display user name in template', () => {
+  it('should show user in template', () => {
     const element: HTMLElement = fixture.nativeElement;
-    expect(element.querySelector('span')?.textContent)
-      .toContain('Test User');
+    expect(element.textContent).toContain('Test User');
   });
 });

@@ -1,50 +1,46 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-4">
+<div class="login-wrapper">
 
-      <div class="card shadow p-4">
+  <div class="login-card">
 
-        <h3 class="text-center mb-4">Login</h3>
-
-        <!-- Email -->
-        <div class="mb-3">
-          <input type="email" class="form-control" [(ngModel)]="email" placeholder="Email" />
-        </div>
-
-        <!-- Password -->
-        <div class="mb-3">
-          <input type="password" class="form-control" [(ngModel)]="password" placeholder="Password" />
-
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Role</label>
-          <select class="form-control" [(ngModel)]="Role">
-            <option value="Trader">Trader</option>
-            <option value="NonTrader">NonTrader</option>
-          </select>
-        </div>
+    <h2 class="title">Welcome Back 👋</h2>
+    <p class="subtitle">Login to continue trading</p>
 
 
-        <!-- Login Button -->
-        <button class="btn btn-primary w-100 mb-2" (click)="login()">
-          Login
-        </button>
-
-        <!-- Signup Link -->
-        <div class="text-center">
-          <button class=" btn-primary">
-            <a class="btn btn-link" routerLink="/signup">
-              Create new account
-            </a></button>
-        </div>
-
-        <!-- Error Message -->
-        <p *ngIf="error" class="text-danger text-center mt-2">
-          {{ error }}
-        </p>
-
-      </div>
-
+    <div class="input-group">
+      <input type="email" [(ngModel)]="email" required />
+      <label>Email</label>
     </div>
+
+  
+    <div class="input-group">
+      <input type="password" [(ngModel)]="password" required />
+      <label>Password</label>
+    </div>
+
+    
+    <div class="input-group">
+      <select [(ngModel)]="Role">
+        <option value="" disabled selected>Select Role</option>
+        <option value="Trader">Trader</option>
+        <option value="NonTrader">NonTrader</option>
+      </select>
+    </div>
+
+    
+    <button class="login-btn" (click)="login()">
+      Login
+    </button>
+
+
+    <p *ngIf="error" class="error-msg">
+      {{ error }}
+    </p>
+
+    <p class="signup-text">
+      Don’t have an account?
+      <a routerLink="/signup">Create one</a>
+    </p>
+
   </div>
+
 </div>

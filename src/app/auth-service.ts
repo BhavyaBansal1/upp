@@ -54,7 +54,6 @@ export class AuthService {
       return null;
     }
     const user = JSON.parse(atob(t));
-    console.log(user.role);
     return user.role;
 
   }

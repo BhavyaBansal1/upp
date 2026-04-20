@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Hoalding } from '../holding/hoalding';
+import { holding } from '../holding/holding';
 
 @Component({
   selector: 'app-sumary',
-  imports: [RouterOutlet, Hoalding],
+  imports: [RouterOutlet, holding],
   templateUrl: './sumary.html',
   styleUrl: './sumary.css',
 })

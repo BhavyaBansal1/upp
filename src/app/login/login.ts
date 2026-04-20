@@ -7,7 +7,7 @@ import { SignupComponent } from '../signup-component/signup-component';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, RouterOutlet, CommonModule, RouterLink,SignupComponent],
+  imports: [FormsModule, RouterOutlet, CommonModule, RouterLink, SignupComponent],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -23,7 +23,7 @@ export class Login {
   login() {
     const success = this.auth.login(this.email, this.password, this.Role);
     if (success) {
-      this.router.navigate(['/dashbord']);
+      this.router.navigate(['/dashboard']);
     } else {
       this.error = 'Invalid credentials';
     }

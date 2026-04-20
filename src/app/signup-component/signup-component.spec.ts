@@ -45,29 +45,18 @@ describe('SignupComponent - Pure TestBed ', () => {
   });
 
   it('should create component', () => {
-    if (!component) {
-      throw new Error('Component not created');
-    }
+    expect(component).toBeTruthy();
   });
 
   it('should signup successfully and navigate to login', () => {
     component.email = 'new@test.com';
     component.password = '123456';
     component.Role = 'user';
-
     component.signup();
+    expect(component.success).toBe('Signup successful! Please login.');
+    expect(component.error).toBe('');
 
-    if (component.success !== 'Signup successful! Please login.') {
-      throw new Error('Success message mismatch');
-    }
-
-    if (component.error !== '') {
-      throw new Error('Error should be empty');
-    }
-
-    if (routerMock.navigatedTo !== '/') {
-      throw new Error('Navigation failed');
-    }
+    expect(routerMock.navigatedTo).toBe('/');
   });
 
   it('should fail signup when user already exists', () => {
@@ -75,16 +64,11 @@ describe('SignupComponent - Pure TestBed ', () => {
     component.password = '123456';
     component.Role = 'admin';
     component.signup();
+expect(component.error).toBe('User already exists');
 
-    if (component.error !== 'User already exists') {
-      throw new Error('Error message mismatch');
-    }
-    if (component.success !== '') {
-      throw new Error('Success should be empty');
-    }
-    if (routerMock.navigatedTo !== '') {
-      throw new Error('Should not navigate on failure');
-    }
+expect(component.success).toBe('');
+
+expect(routerMock.navigatedTo).toBe('');
   });
 
   //   it('should pass correct values to AuthService', () => {

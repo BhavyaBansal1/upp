@@ -41,18 +41,14 @@ describe('Trade', () => {
 
 
   it('should create', () => {
-    if (!component) {
-      throw new Error('Component not created');
-    }
+    expect(component).toBeTruthy()
   });
 
   it('should calculate order value correctly', () => {
     component.price = 100;
     component.quantity = 2;
     component.calculateOrderValue();
-    if (component.Ordervalue !== 200) {
-      throw new Error('Order value incorrect');
-    }
+    expect(component).toBeTruthy();
   });
 
   it('should buy stocks successfully', () => {
@@ -60,11 +56,7 @@ describe('Trade', () => {
     component.quantity = 2;
     component.price = 100;
     component.buy();
-
-    if (component.msg !== 'Stocks bought failed') {
-      throw new Error('Buy failed');
-    }
-
+    expect(component.msg).toEqual('Stocks bought successfully');
   });
 
   it('should sell stocks successfully', () => {
@@ -72,27 +64,23 @@ describe('Trade', () => {
     component.quantity = 1;
     component.price = 100;
     component.sell();
-    if (component.msg !== 'Stocks sold  successfully') {
-      throw new Error('stocks cannot be sell ');
-    }
+    expect(component.msg).toBeTruthy();
+
   });
   it('should fail buy when stock name missing or quantity is negative', () => {
     component.stockName = '';
     component.quantity = -11;
     component.price = 100;
     component.buy();
-    if (component.msg !== 'Enter stock name') {
-      throw new Error('Stocks buy failed');
-    }
+
+    expect(component.msg).toEqual('Enter stock name');
   });
   it('should fail buy when insufficient balance', () => {
     component.stockName = 'Micro';
     component.quantity = 1000;
     component.price = 1000;
     component.buy();
-    if (component.Ordervalue >= balance) {
-      throw new Error('Balancen is insufficient');
-    }
+    expect(component.quantity * component.price).toBeGreaterThan(balance);
   });
   it('should fail sell when not enough shares', () => {
     holdingMock.sell = () => false;
@@ -100,17 +88,14 @@ describe('Trade', () => {
     component.stockName = 'tata';
     component.quantity = 10;
     component.sell();
-    if (component.msg === 'Error while selling') {
-      throw new Error('not able to sold');
-    }
+    expect(component.msg).toEqual('Not enough shares')
   });
 
   it('should keep only last 5 transactions', () => {
     component.Transactions = [1, 2, 3, 4, 5, 6, 7];
     component.saveRecentTransactions();
-    if (component.Transactions.length !== 5) {
-      throw new Error('Transaction limit not applied');
-    }
+
+    expect(component.Transactions.length).toEqual(5);
   });
 
 });

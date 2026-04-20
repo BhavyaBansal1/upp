@@ -12,7 +12,7 @@ export class controlauthGuard implements CanActivate {
     if (check === 'Trader') {
       return true;
     }
-    this.router.navigate(['/Dashbord']);
+    this.router.navigate(['/dashboard']);
     return false;
   }
 

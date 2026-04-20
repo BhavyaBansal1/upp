@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
-import { Dashbord } from './dashbord/dashbord';
 import { Sumary } from './summary/sumary';
 import { Trade } from './trade/trade';
 import { Holdings } from './holdings';
-import { Hoalding } from './holding/hoalding';
+import { holding } from './holding/holding';
 import { SignupComponent } from './signup-component/signup-component';
 import { AuthGuard } from './auth-guard';
 import { Login } from './login/login';
 import { controlauthGuard } from './controlauth-guard';
+import { dashboard } from './dashboard/dashboard';
 
 export const routes: Routes = [
 
@@ -21,8 +21,8 @@ export const routes: Routes = [
     component: SignupComponent
   },
   {
-    path: 'dashbord',
-    component: Dashbord,
+    path: 'dashboard',
+    component:dashboard,
     canActivate: [AuthGuard]
   },
   {
@@ -38,7 +38,7 @@ export const routes: Routes = [
   },
   {
     path: 'hold',
-    component: Hoalding,
+    component: holding,
     canActivate: [AuthGuard]
   },
   {

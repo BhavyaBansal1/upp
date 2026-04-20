@@ -1,19 +1,27 @@
-import { Component } from '@angular/core';
-import { Dashbord } from '../dashbord/dashbord';
-import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../auth-service';
 import { CommonModule } from '@angular/common';
+import { dashboard } from '../dashboard/dashboard';
 
 @Component({
   selector: 'app-navbar',
-  imports: [Dashbord, RouterLink, RouterLinkActive, CommonModule],
+  standalone: true,
+  imports: [dashboard, RouterLink,RouterLinkActive, CommonModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar {
-  constructor(public auth: AuthService) { }
+export class Navbar implements OnInit {
+
+  user: any;
+
+  constructor(public auth: AuthService) {}
+
+  ngOnInit() {
+    this.user = this.auth.getUser(); // ✅ FIX
+  }
 
   getuser() {
-    return this.auth.getUser();
+    return this.user;
   }
 }
