@@ -21,7 +21,7 @@ describe('Trade', () => {
     buy: () => { },
     sell: () => true,
     getQuantity: () => 10,
-    getAllholdings: () => []
+    get_all_Holdings: () => []
   };
 
   beforeEach(async () => {

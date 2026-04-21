@@ -1,40 +1,44 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { holding } from '../holding/holding';
-import { Sumary } from '../summary/sumary';
 import Chart from 'chart.js/auto';
 import { Holdings } from '../holdings';
 import { ChartComponent } from '../chart/chart';
 import { BalanceService } from '../balance-service';
+import { DatePipe } from '@angular/common';
+import { summary } from '../summary/sumary';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [Sumary,holding, ChartComponent],
-  templateUrl: './dashboard.html',
+  imports: [summary,holding, ChartComponent,DatePipe],
+  templateUrl:'./dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class dashboard implements AfterViewInit {
 
   portfolioValue: number = 0;
-
+date:any;
   stockChart!: Chart;
 
   constructor(
-    public holdingservice: Holdings, public balanceService: BalanceService) { }
+    public holdingservice: Holdings, public balanceService: BalanceService, public cd:ChangeDetectorRef) { 
+      
+    }
 
   ngOnInit() {
     this.updatePortfolioValue();
     this.createStockChart();
-
+    this.date=new Date();
     setInterval(() => {
       this.updatePortfolioValue();
+      this.date=new Date();
+      this.cd.detectChanges();
     }, 1000);
   }
 
   updatePortfolioValue() {
     try {
-      const holdings = this.holdingservice.getAllholdings();
+      const holdings = this.holdingservice.get_all_Holdings();
       let total = 0;
-
       holdings.forEach(stock => {
         total += stock.quantity * stock.price;
       });
@@ -45,7 +49,7 @@ export class dashboard implements AfterViewInit {
     }
   }
   getstocks() {
-    return this.holdingservice.getAllholdings();
+    return this.holdingservice.get_all_Holdings();
   }
 
   ngAfterViewInit() {

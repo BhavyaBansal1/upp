@@ -30,7 +30,7 @@ export class ChartComponent implements AfterViewInit {
   list1: any[] = [];
 
   constructor(public holdingservic: Holdings) {
-    this.list1 = this.holdingservic.getAllholdings();
+    this.list1 = this.holdingservic.get_all_Holdings();
   }
 
   totalst: number = 0;
@@ -55,27 +55,26 @@ export class ChartComponent implements AfterViewInit {
     { name: 'RiskBalance', value: 70 },
     { name: 'Activity', value: 85 }
   ];
-
   months = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
   monthlyReturns = [10, 20, 15, 25, 30];
-
   segments = ['stocks', 'funds'];
-
   ngAfterViewInit() {
-    try {
+    try {   this.createCharts();
+        this.createPieChart();
+        this.Advisorychart();
+        this.calculatepercentage();
+        this.segmachart();
       setInterval(() => {
         this.createCharts();
         this.createPieChart();
         this.Advisorychart();
         this.calculatepercentage();
         this.segmachart();
-      }, 1000);
+      }, 5000);
 
     } catch (e) {
-      ;
     }
   }
-
   calculatepercentage() {
     try {
       for (let i in this.list1) {
@@ -87,10 +86,9 @@ export class ChartComponent implements AfterViewInit {
       }
       this.totalc = this.totalst + this.totalmf;
     } catch (e) {
-      ;
+      this.totalc
     }
   }
-
   generateData(basePrice: number): number[] {
     const data: number[] = [];
     let price = basePrice;

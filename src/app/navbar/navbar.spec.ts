@@ -4,7 +4,7 @@ import { AuthService } from '../auth-service';
 import { RouterTestingModule } from '@angular/router/testing';
 
 class MockAuthService {
-  getUser() {
+  get_user() {
     return { name: 'Test User' };
   }
 
@@ -39,12 +39,12 @@ describe('Navbar', () => {
   });
 
   it('should load user on init', () => {
-    expect(component.auth.getUser).toBeTruthy();
+    expect(component.auth.get_user).toBeTruthy();
     // expect(component.auth.getrole).toEqual('user');
   });
 
-  it('should return user from getuser()', () => {
-    const user = component.getuser();
+  it('should return user from get_user()', () => {
+    const user = component.get_user();
     expect(user.name).toBe('Test User');
   });
 

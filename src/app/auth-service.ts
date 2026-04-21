@@ -12,8 +12,13 @@ export class AuthService {
     const exists = this.users.find(u => u.email === email);
     if (exists) {
       return false;
+
+    }
+    if(email==='' && password===''){
+      return false;
     }
     this.users.push({ email, password, role });
+  
     localStorage.setItem('users', JSON.stringify(this.users));
 
     return true;
@@ -35,7 +40,7 @@ export class AuthService {
     return false;
   }
 
-  getUser() {
+  get_user() {
     const token = localStorage.getItem('token');
     return token ? JSON.parse(atob(token)) : null;
   }

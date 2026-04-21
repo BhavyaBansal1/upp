@@ -66,8 +66,8 @@
 .input-group input:not(:placeholder-shown) + label {
   top: -6px;
   left: 8px;
-  font-size: 10px;
-  color: #0072ff;
+  font-size: 13px;
+  color:wheat;
 }
 
 /* Button */

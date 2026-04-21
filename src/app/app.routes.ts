@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { Sumary } from './summary/sumary';
 import { Trade } from './trade/trade';
 import { Holdings } from './holdings';
 import { holding } from './holding/holding';
@@ -8,6 +7,7 @@ import { AuthGuard } from './auth-guard';
 import { Login } from './login/login';
 import { controlauthGuard } from './controlauth-guard';
 import { dashboard } from './dashboard/dashboard';
+import { summary } from './summary/sumary';
 
 export const routes: Routes = [
 
@@ -32,8 +32,8 @@ export const routes: Routes = [
 
   },
   {
-    path: 'sumary',
-    component: Sumary,
+    path: 'summary',
+    component: summary,
     canActivate: [AuthGuard]
   },
   {
@@ -43,7 +43,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '',
-    canActivate: [AuthGuard]
+    redirectTo: 'login',
   }
 ];

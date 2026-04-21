@@ -7,7 +7,7 @@ import { SignupComponent } from '../signup-component/signup-component';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, RouterOutlet, CommonModule, RouterLink, SignupComponent],
+  imports: [FormsModule, RouterOutlet, CommonModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -18,7 +18,7 @@ export class Login {
   error = '';
   Role = '';
 
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(public auth: AuthService, public router: Router) { }
 
   login() {
     const success = this.auth.login(this.email, this.password, this.Role);

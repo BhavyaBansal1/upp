@@ -18,11 +18,10 @@ export class holding {
   autore: boolean = false;
 
   constructor(public holdingservice: Holdings, public cd: ChangeDetectorRef) {
-    this.getallHoldings();
+    this.get_all_Holdings();
   }
-
   //   updatePortfolioValue() {
-  //     const holdings = this.holdingservice.getAllholdings();
+  //     const holdings = this.holdingservice.get_all_Holdings();
   //     let total = 0;
   //     for (let i of holdings) {
   //   total +=i.quantity * i.price;
@@ -30,8 +29,8 @@ export class holding {
   //     this.portfolioValue = total;
   //   }
 
-  getallHoldings() {
-    this.list1 = this.holdingservice.getAllholdings();
+  get_all_Holdings() {
+    this.list1 = this.holdingservice.get_all_Holdings();
   }
 
   getstocks() {
@@ -39,22 +38,19 @@ export class holding {
   }
   // .filter(s => s.type === 'stock')
 
-  pagerelod() {
+  pagereload() {
     try {
-
-
       this.holdingservice.updatePrices();
     } catch (e) {
-      ;
+      
     }
   }
-  togle_load() {
+  toggle_load() {
     try {
       this.autore = !this.autore;
       if (this.autore) {
         this.intervalid = window.setInterval(() => {
-          ("autorefresh working")
-          this.pagerelod();
+          this.pagereload();
           // this.updatePortfolioValue;
           this.cd.detectChanges();
         }, 5000)
@@ -68,6 +64,5 @@ export class holding {
     catch (e) {
       ;
     }
-
   }
 }

@@ -18,10 +18,10 @@ export class Navbar implements OnInit {
   constructor(public auth: AuthService) {}
 
   ngOnInit() {
-    this.user = this.auth.getUser(); // ✅ FIX
+    this.user = this.auth.get_user(); 
   }
 
-  getuser() {
+  get_user() {
     return this.user;
   }
 }

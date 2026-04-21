@@ -5,10 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-// ✅ Mock AuthService
 class MockAuthService {
   shouldReturn = false;
-
   login(email: string, password: string, role: string) {
     return this.shouldReturn;
   }
@@ -25,11 +23,7 @@ describe('LoginComponent (stable)', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        Login,
-        FormsModule,
-        RouterTestingModule  
-      ],
+      imports: [Login, FormsModule,RouterTestingModule    ],
       providers: [
         { provide: AuthService, useClass: MockAuthService }
       ]

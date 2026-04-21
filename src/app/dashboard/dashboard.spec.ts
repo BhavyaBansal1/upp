@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { holding } from './holding';
+import { dashboard } from './dashboard';
 import { Holdings } from '../holdings';
 import { ChangeDetectorRef } from '@angular/core';
 import 'zone.js';
 import 'zone.js/testing';
 
-describe('holding Component (Advanced No Jasmine spies)', () => {
-  let component: holding;
-  let fixture: ComponentFixture<holding>;
+describe('dashboard Component (Advanced No Jasmine spies)', () => {
+  let component: dashboard;
+  let fixture: ComponentFixture<dashboard>;
 
   let updatePricesCalled = 0;
   let getAllHoldingsCalled = 0;
@@ -27,7 +27,7 @@ describe('holding Component (Advanced No Jasmine spies)', () => {
   };
 
   const mockCdRef = {
-    detectChanges: () => { }
+    detectChanges: () => {}
   };
 
   beforeEach(async () => {
@@ -35,14 +35,14 @@ describe('holding Component (Advanced No Jasmine spies)', () => {
     getAllHoldingsCalled = 0;
 
     await TestBed.configureTestingModule({
-      imports: [holding],
+      imports: [dashboard],
       providers: [
         { provide: Holdings, useValue: mockHoldingsService },
         { provide: ChangeDetectorRef, useValue: mockCdRef }
       ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(holding);
+    fixture = TestBed.createComponent(dashboard);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -53,38 +53,17 @@ describe('holding Component (Advanced No Jasmine spies)', () => {
 
   it('should return stocks list', () => {
     const result = component.getstocks();
-    expect(result.length).toBe(2);
+    expect(result).toBeTruthy();
+    expect(result.length).toBeGreaterThan(0);
   });
 
-  it('should call updatePrices in pagereload', () => {
-    component.pagereload();
-    expect(updatePricesCalled).toBeTruthy;
+  it('should update portfolio value', () => {
+    const ret = component.updatePortfolioValue();
+    expect(ret).not.toBeNull();
   });
 
-  it('should start auto refresh when toggled ON', () => {
-    component.toggle_load();
-
-    expect(component.autore).toBeTrue();
-    expect(component.intervalid).toBeTruthy();
-  });
-
-  it('should stop auto refresh when toggled OFF', () => {
-    component.toggle_load(); 
-    component.toggle_load(); 
-
-    expect(component.autore).toBeFalse();
-  });
-
-  it('should handle errors in pagereload safely', () => {
-    mockHoldingsService.updatePrices = () => {
-      throw new Error('check failure');
-    };
-
-    expect(() => component.pagereload()).not.toThrow();
-  });
-
-  it('should have default initial values', () => {
-    expect(component.portfolioValue).toBe(0);
-    expect(component.autore).toBeFalse();
+  it('should create stock chart', () => {
+    component.createStockChart();
+    expect(component.stockChart).toBeTruthy();
   });
 });

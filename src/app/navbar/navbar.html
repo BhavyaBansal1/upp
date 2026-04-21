@@ -24,7 +24,7 @@
       </ul>
 
       <!-- USER INFO (FIXED) -->
-      <div class="d-flex align-items-center ms-3" *ngIf="auth.getUser() as user">
+      <div class="d-flex align-items-center ms-3" *ngIf="auth.get_user() as user">
 
         <span class="text-white me-2">
           Welcome {{ user.name.split("@")[0].trim() }}

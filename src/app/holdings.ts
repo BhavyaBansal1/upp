@@ -85,7 +85,7 @@ export class Holdings {
     }
   }
 
-  getAllholdings() {
+  get_all_Holdings() {
     return this.list;
   }
 
